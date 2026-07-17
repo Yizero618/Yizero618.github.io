@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>王亦琳作品集 | Portfolio</title>
+  <meta name="description" content="王亦琳环境设计作品集，Anhui University，2022-2025。">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #141414;
+      --muted: #727272;
+      --line: #d9d9d6;
+      --paper: #ffffff;
+      --wash: #f7f7f3;
+      --panel: #efefeb;
+      --accent: #386f68;
+      --accent-strong: #a34e45;
+      --shadow: 0 18px 45px rgba(18, 18, 18, .12);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--wash);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(56, 111, 104, .08) 0, rgba(56, 111, 104, .08) 1px, transparent 1px),
+        var(--wash);
+      background-size: 72px 72px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 20px;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(18px);
+      z-index: 5;
+    }
+
+    .brand {
+      display: grid;
+      gap: 10px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: .94;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      display: grid;
+      gap: 5px;
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .button,
+    .icon-button {
+      min-height: 44px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .button:hover,
+    .icon-button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .icon-button {
+      width: 44px;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .icon-button svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2.2;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .progress {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--panel);
+    }
+
+    .progress-bar {
+      display: block;
+      width: 2.5%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      transition: width .2s ease;
+    }
+
+    .thumbs {
+      min-height: 0;
+      overflow: auto;
+      padding-right: 5px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      scrollbar-width: thin;
+    }
+
+    .thumb {
+      width: 100%;
+      min-height: 86px;
+      display: grid;
+      grid-template-columns: 108px minmax(38px, 1fr);
+      gap: 11px;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 7px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .thumb img {
+      width: 108px;
+      height: auto;
+      aspect-ratio: 1.415 / 1;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      display: block;
+    }
+
+    .thumb span {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .thumb:hover,
+    .thumb.is-active {
+      border-color: rgba(56, 111, 104, .45);
+      background: rgba(56, 111, 104, .08);
+      color: var(--ink);
+    }
+
+    .viewer {
+      min-width: 0;
+      padding: 28px clamp(18px, 4vw, 52px) 52px;
+    }
+
+    .pages {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      display: grid;
+      gap: clamp(22px, 4vw, 44px);
+    }
+
+    .sheet {
+      scroll-margin-top: 24px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .sheet-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .sheet img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-bar {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        display: block;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: auto;
+        grid-template-rows: auto auto auto;
+        gap: 14px;
+        padding: 14px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 14px;
+      }
+
+      h1 {
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .meta {
+        display: none;
+      }
+
+      .actions {
+        grid-template-columns: 1fr 44px;
+      }
+
+      .thumbs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 1px 0 4px;
+      }
+
+      .thumb {
+        flex: 0 0 82px;
+        min-height: 70px;
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .thumb img {
+        width: 70px;
+        margin: 0 auto;
+      }
+
+      .thumb span {
+        font-size: 11px;
+      }
+
+      .viewer {
+        padding: 18px 12px 34px;
+      }
+
+      .pages {
+        gap: 24px;
+      }
+
+      .sheet {
+        scroll-margin-top: 168px;
+      }
+
+      .sheet img {
+        border-radius: 6px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .sidebar { padding: 12px; }
+
+      .brand {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      h1 { font-size: 24px; }
+
+      .eyebrow { font-size: 11px; }
+
+      .viewer { padding-inline: 8px; }
+
+      .sheet-meta {
+        font-size: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .progress-bar { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Environmental Design</p>
+          <h1>王亦琳<br>作品集</h1>
+          <div class="meta">
+            <span>Anhui University</span>
+            <span>2022-2025 · Portfolio</span>
+            <span>40 Pages</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrap" aria-label="页面进度">
+        <div class="actions">
+          <a class="button" href="#page-01">浏览作品集</a>
+          <button class="icon-button" type="button" id="toTop" aria-label="回到顶部" title="回到顶部">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m18 15-6-6-6 6"/><path d="M12 20V9"/></svg>
+          </button>
+        </div>
+        <div class="progress-label">
+          <span id="currentPage">01</span>
+          <span>40</span>
+        </div>
+        <div class="progress" aria-hidden="true"><span class="progress-bar" id="progressBar"></span></div>
+      </div>
+
+      <nav class="thumbs" aria-label="作品集页面">
+          <button class="thumb" type="button" data-target="page-01" aria-label="第 1 页">
+            <img src="assets/thumbs/thumb-01.jpg" width="150" height="106" alt="第 1 页缩略图" loading="lazy">
+            <span>01</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-02" aria-label="第 2 页">
+            <img src="assets/thumbs/thumb-02.jpg" width="150" height="106" alt="第 2 页缩略图" loading="lazy">
+            <span>02</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-03" aria-label="第 3 页">
+            <img src="assets/thumbs/thumb-03.jpg" width="150" height="106" alt="第 3 页缩略图" loading="lazy">
+            <span>03</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-04" aria-label="第 4 页">
+            <img src="assets/thumbs/thumb-04.jpg" width="150" height="106" alt="第 4 页缩略图" loading="lazy">
+            <span>04</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-05" aria-label="第 5 页">
+            <img src="assets/thumbs/thumb-05.jpg" width="150" height="106" alt="第 5 页缩略图" loading="lazy">
+            <span>05</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-06" aria-label="第 6 页">
+            <img src="assets/thumbs/thumb-06.jpg" width="150" height="106" alt="第 6 页缩略图" loading="lazy">
+            <span>06</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-07" aria-label="第 7 页">
+            <img src="assets/thumbs/thumb-07.jpg" width="150" height="106" alt="第 7 页缩略图" loading="lazy">
+            <span>07</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-08" aria-label="第 8 页">
+            <img src="assets/thumbs/thumb-08.jpg" width="150" height="106" alt="第 8 页缩略图" loading="lazy">
+            <span>08</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-09" aria-label="第 9 页">
+            <img src="assets/thumbs/thumb-09.jpg" width="150" height="106" alt="第 9 页缩略图" loading="lazy">
+            <span>09</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-10" aria-label="第 10 页">
+            <img src="assets/thumbs/thumb-10.jpg" width="150" height="106" alt="第 10 页缩略图" loading="lazy">
+            <span>10</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-11" aria-label="第 11 页">
+            <img src="assets/thumbs/thumb-11.jpg" width="150" height="106" alt="第 11 页缩略图" loading="lazy">
+            <span>11</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-12" aria-label="第 12 页">
+            <img src="assets/thumbs/thumb-12.jpg" width="150" height="106" alt="第 12 页缩略图" loading="lazy">
+            <span>12</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-13" aria-label="第 13 页">
+            <img src="assets/thumbs/thumb-13.jpg" width="150" height="106" alt="第 13 页缩略图" loading="lazy">
+            <span>13</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-14" aria-label="第 14 页">
+            <img src="assets/thumbs/thumb-14.jpg" width="150" height="106" alt="第 14 页缩略图" loading="lazy">
+            <span>14</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-15" aria-label="第 15 页">
+            <img src="assets/thumbs/thumb-15.jpg" width="150" height="106" alt="第 15 页缩略图" loading="lazy">
+            <span>15</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-16" aria-label="第 16 页">
+            <img src="assets/thumbs/thumb-16.jpg" width="150" height="106" alt="第 16 页缩略图" loading="lazy">
+            <span>16</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-17" aria-label="第 17 页">
+            <img src="assets/thumbs/thumb-17.jpg" width="150" height="106" alt="第 17 页缩略图" loading="lazy">
+            <span>17</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-18" aria-label="第 18 页">
+            <img src="assets/thumbs/thumb-18.jpg" width="150" height="106" alt="第 18 页缩略图" loading="lazy">
+            <span>18</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-19" aria-label="第 19 页">
+            <img src="assets/thumbs/thumb-19.jpg" width="150" height="106" alt="第 19 页缩略图" loading="lazy">
+            <span>19</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-20" aria-label="第 20 页">
+            <img src="assets/thumbs/thumb-20.jpg" width="150" height="106" alt="第 20 页缩略图" loading="lazy">
+            <span>20</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-21" aria-label="第 21 页">
+            <img src="assets/thumbs/thumb-21.jpg" width="150" height="106" alt="第 21 页缩略图" loading="lazy">
+            <span>21</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-22" aria-label="第 22 页">
+            <img src="assets/thumbs/thumb-22.jpg" width="150" height="106" alt="第 22 页缩略图" loading="lazy">
+            <span>22</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-23" aria-label="第 23 页">
+            <img src="assets/thumbs/thumb-23.jpg" width="150" height="106" alt="第 23 页缩略图" loading="lazy">
+            <span>23</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-24" aria-label="第 24 页">
+            <img src="assets/thumbs/thumb-24.jpg" width="150" height="106" alt="第 24 页缩略图" loading="lazy">
+            <span>24</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-25" aria-label="第 25 页">
+            <img src="assets/thumbs/thumb-25.jpg" width="150" height="106" alt="第 25 页缩略图" loading="lazy">
+            <span>25</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-26" aria-label="第 26 页">
+            <img src="assets/thumbs/thumb-26.jpg" width="150" height="106" alt="第 26 页缩略图" loading="lazy">
+            <span>26</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-27" aria-label="第 27 页">
+            <img src="assets/thumbs/thumb-27.jpg" width="150" height="106" alt="第 27 页缩略图" loading="lazy">
+            <span>27</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-28" aria-label="第 28 页">
+            <img src="assets/thumbs/thumb-28.jpg" width="150" height="106" alt="第 28 页缩略图" loading="lazy">
+            <span>28</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-29" aria-label="第 29 页">
+            <img src="assets/thumbs/thumb-29.jpg" width="150" height="106" alt="第 29 页缩略图" loading="lazy">
+            <span>29</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-30" aria-label="第 30 页">
+            <img src="assets/thumbs/thumb-30.jpg" width="150" height="106" alt="第 30 页缩略图" loading="lazy">
+            <span>30</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-31" aria-label="第 31 页">
+            <img src="assets/thumbs/thumb-31.jpg" width="150" height="106" alt="第 31 页缩略图" loading="lazy">
+            <span>31</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-32" aria-label="第 32 页">
+            <img src="assets/thumbs/thumb-32.jpg" width="150" height="106" alt="第 32 页缩略图" loading="lazy">
+            <span>32</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-33" aria-label="第 33 页">
+            <img src="assets/thumbs/thumb-33.jpg" width="150" height="106" alt="第 33 页缩略图" loading="lazy">
+            <span>33</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-34" aria-label="第 34 页">
+            <img src="assets/thumbs/thumb-34.jpg" width="150" height="106" alt="第 34 页缩略图" loading="lazy">
+            <span>34</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-35" aria-label="第 35 页">
+            <img src="assets/thumbs/thumb-35.jpg" width="150" height="106" alt="第 35 页缩略图" loading="lazy">
+            <span>35</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-36" aria-label="第 36 页">
+            <img src="assets/thumbs/thumb-36.jpg" width="150" height="106" alt="第 36 页缩略图" loading="lazy">
+            <span>36</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-37" aria-label="第 37 页">
+            <img src="assets/thumbs/thumb-37.jpg" width="150" height="106" alt="第 37 页缩略图" loading="lazy">
+            <span>37</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-38" aria-label="第 38 页">
+            <img src="assets/thumbs/thumb-38.jpg" width="150" height="106" alt="第 38 页缩略图" loading="lazy">
+            <span>38</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-39" aria-label="第 39 页">
+            <img src="assets/thumbs/thumb-39.jpg" width="150" height="106" alt="第 39 页缩略图" loading="lazy">
+            <span>39</span>
+          </button>
+          <button class="thumb" type="button" data-target="page-40" aria-label="第 40 页">
+            <img src="assets/thumbs/thumb-40.jpg" width="150" height="106" alt="第 40 页缩略图" loading="lazy">
+            <span>40</span>
+          </button>
+      </nav>
+    </aside>
+
+    <main class="viewer">
+      <div class="pages">
+        <section class="sheet" id="page-01" data-page="1">
+          <div class="sheet-meta">
+            <span>Page 01</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-01.jpg" width="1853" height="1310" alt="王亦琳作品集第 1 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-02" data-page="2">
+          <div class="sheet-meta">
+            <span>Page 02</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-02.jpg" width="1853" height="1310" alt="王亦琳作品集第 2 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-03" data-page="3">
+          <div class="sheet-meta">
+            <span>Page 03</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-03.jpg" width="1853" height="1310" alt="王亦琳作品集第 3 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-04" data-page="4">
+          <div class="sheet-meta">
+            <span>Page 04</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-04.jpg" width="1853" height="1310" alt="王亦琳作品集第 4 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-05" data-page="5">
+          <div class="sheet-meta">
+            <span>Page 05</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-05.jpg" width="1853" height="1310" alt="王亦琳作品集第 5 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-06" data-page="6">
+          <div class="sheet-meta">
+            <span>Page 06</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-06.jpg" width="1853" height="1310" alt="王亦琳作品集第 6 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-07" data-page="7">
+          <div class="sheet-meta">
+            <span>Page 07</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-07.jpg" width="1853" height="1310" alt="王亦琳作品集第 7 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-08" data-page="8">
+          <div class="sheet-meta">
+            <span>Page 08</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-08.jpg" width="1853" height="1310" alt="王亦琳作品集第 8 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-09" data-page="9">
+          <div class="sheet-meta">
+            <span>Page 09</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-09.jpg" width="1853" height="1310" alt="王亦琳作品集第 9 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-10" data-page="10">
+          <div class="sheet-meta">
+            <span>Page 10</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-10.jpg" width="1853" height="1310" alt="王亦琳作品集第 10 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-11" data-page="11">
+          <div class="sheet-meta">
+            <span>Page 11</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-11.jpg" width="1853" height="1310" alt="王亦琳作品集第 11 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-12" data-page="12">
+          <div class="sheet-meta">
+            <span>Page 12</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-12.jpg" width="1853" height="1310" alt="王亦琳作品集第 12 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-13" data-page="13">
+          <div class="sheet-meta">
+            <span>Page 13</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-13.jpg" width="1853" height="1310" alt="王亦琳作品集第 13 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-14" data-page="14">
+          <div class="sheet-meta">
+            <span>Page 14</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-14.jpg" width="1853" height="1310" alt="王亦琳作品集第 14 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-15" data-page="15">
+          <div class="sheet-meta">
+            <span>Page 15</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-15.jpg" width="1853" height="1310" alt="王亦琳作品集第 15 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-16" data-page="16">
+          <div class="sheet-meta">
+            <span>Page 16</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-16.jpg" width="1853" height="1310" alt="王亦琳作品集第 16 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-17" data-page="17">
+          <div class="sheet-meta">
+            <span>Page 17</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-17.jpg" width="1853" height="1310" alt="王亦琳作品集第 17 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-18" data-page="18">
+          <div class="sheet-meta">
+            <span>Page 18</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-18.jpg" width="1853" height="1310" alt="王亦琳作品集第 18 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-19" data-page="19">
+          <div class="sheet-meta">
+            <span>Page 19</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-19.jpg" width="1853" height="1310" alt="王亦琳作品集第 19 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-20" data-page="20">
+          <div class="sheet-meta">
+            <span>Page 20</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-20.jpg" width="1853" height="1310" alt="王亦琳作品集第 20 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-21" data-page="21">
+          <div class="sheet-meta">
+            <span>Page 21</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-21.jpg" width="1853" height="1310" alt="王亦琳作品集第 21 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-22" data-page="22">
+          <div class="sheet-meta">
+            <span>Page 22</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-22.jpg" width="1853" height="1310" alt="王亦琳作品集第 22 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-23" data-page="23">
+          <div class="sheet-meta">
+            <span>Page 23</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-23.jpg" width="1853" height="1310" alt="王亦琳作品集第 23 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-24" data-page="24">
+          <div class="sheet-meta">
+            <span>Page 24</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-24.jpg" width="1853" height="1310" alt="王亦琳作品集第 24 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-25" data-page="25">
+          <div class="sheet-meta">
+            <span>Page 25</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-25.jpg" width="1853" height="1310" alt="王亦琳作品集第 25 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-26" data-page="26">
+          <div class="sheet-meta">
+            <span>Page 26</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-26.jpg" width="1853" height="1310" alt="王亦琳作品集第 26 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-27" data-page="27">
+          <div class="sheet-meta">
+            <span>Page 27</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-27.jpg" width="1853" height="1310" alt="王亦琳作品集第 27 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-28" data-page="28">
+          <div class="sheet-meta">
+            <span>Page 28</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-28.jpg" width="1853" height="1310" alt="王亦琳作品集第 28 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-29" data-page="29">
+          <div class="sheet-meta">
+            <span>Page 29</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-29.jpg" width="1853" height="1310" alt="王亦琳作品集第 29 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-30" data-page="30">
+          <div class="sheet-meta">
+            <span>Page 30</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-30.jpg" width="1853" height="1310" alt="王亦琳作品集第 30 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-31" data-page="31">
+          <div class="sheet-meta">
+            <span>Page 31</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-31.jpg" width="1853" height="1310" alt="王亦琳作品集第 31 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-32" data-page="32">
+          <div class="sheet-meta">
+            <span>Page 32</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-32.jpg" width="1853" height="1310" alt="王亦琳作品集第 32 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-33" data-page="33">
+          <div class="sheet-meta">
+            <span>Page 33</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-33.jpg" width="1853" height="1310" alt="王亦琳作品集第 33 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-34" data-page="34">
+          <div class="sheet-meta">
+            <span>Page 34</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-34.jpg" width="1853" height="1310" alt="王亦琳作品集第 34 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-35" data-page="35">
+          <div class="sheet-meta">
+            <span>Page 35</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-35.jpg" width="1853" height="1310" alt="王亦琳作品集第 35 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-36" data-page="36">
+          <div class="sheet-meta">
+            <span>Page 36</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-36.jpg" width="1853" height="1310" alt="王亦琳作品集第 36 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-37" data-page="37">
+          <div class="sheet-meta">
+            <span>Page 37</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-37.jpg" width="1853" height="1310" alt="王亦琳作品集第 37 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-38" data-page="38">
+          <div class="sheet-meta">
+            <span>Page 38</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-38.jpg" width="1853" height="1310" alt="王亦琳作品集第 38 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-39" data-page="39">
+          <div class="sheet-meta">
+            <span>Page 39</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-39.jpg" width="1853" height="1310" alt="王亦琳作品集第 39 页" loading="lazy">
+        </section>
+        <section class="sheet" id="page-40" data-page="40">
+          <div class="sheet-meta">
+            <span>Page 40</span>
+            <span>40</span>
+          </div>
+          <img src="assets/pages/page-40.jpg" width="1853" height="1310" alt="王亦琳作品集第 40 页" loading="lazy">
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const totalPages = 40;
+    const thumbs = Array.from(document.querySelectorAll('.thumb'));
+    const sections = Array.from(document.querySelectorAll('.sheet'));
+    const currentPage = document.getElementById('currentPage');
+    const progressBar = document.getElementById('progressBar');
+    const toTop = document.getElementById('toTop');
+
+    function setActive(page) {
+      const value = String(page).padStart(2, '0');
+      currentPage.textContent = value;
+      progressBar.style.width = `${Math.max(1, page / totalPages * 100)}%`;
+      thumbs.forEach((button) => {
+        const active = button.dataset.target === `page-${value}`;
+        button.classList.toggle('is-active', active);
+        if (active && window.innerWidth <= 900) {
+          button.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+        }
+      });
+    }
+
+    thumbs.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    toTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(Number(visible.target.dataset.page));
+    }, { root: null, threshold: [0.22, 0.45, 0.65] });
+
+    sections.forEach((section) => observer.observe(section));
+    setActive(1);
+  </script>
+</body>
+</html>
