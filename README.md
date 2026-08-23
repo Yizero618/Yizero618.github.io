@@ -1,5 +1,10 @@
-# 王亦琳作品集
+# 王亦琳个人主页
 
-静态网页发布包，入口文件为 `index.html`。
+王亦琳（Yilin Wang）的双语个人主页，聚合 AI 产品、研究、实习经历与环境设计作品。
 
-这个版本不包含原始 PDF 下载文件，适合直接上传到 Netlify Drop、Vercel、GitHub Pages 等静态托管服务生成公开链接。
+- `index.html`：个人主页
+- `portfolio.html`：原有 40 页完整作品集
+- `assets/pages/`：作品集高清页面
+- `assets/thumbs/`：作品集缩略图
+
+站点可直接通过 GitHub Pages 发布，无需构建步骤。
