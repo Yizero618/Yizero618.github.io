@@ -1,249 +1,764 @@
 <!doctype html>
-<html lang="zh-CN" data-lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>王亦琳 | AI 产品、研究与设计</title>
-  <meta name="description" content="王亦琳的个人作品集：AI 产品、行业研究、数据分析与环境设计。">
-  <meta name="theme-color" content="#f7f4ee">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="王亦琳 | AI 产品、研究与设计">
-  <meta property="og:description" content="把复杂用户场景转化为可验证、可交付的产品。">
-  <meta property="og:url" content="https://yizero618.github.io/">
-  <meta property="og:image" content="https://yizero618.github.io/assets/og.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Yilin Wang / 王亦琳 — AI Product · Research · Design">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="王亦琳 | AI 产品、研究与设计">
-  <meta name="twitter:description" content="把复杂用户场景转化为可验证、可交付的产品。">
-  <meta name="twitter:image" content="https://yizero618.github.io/assets/og.png">
-  <meta name="twitter:image:alt" content="Yilin Wang / 王亦琳 — AI Product · Research · Design">
-  <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/site.js" defer></script>
+  <meta name="theme-color" content="#202947">
+  <meta name="description" content="Elaine Wang is an AI product thinker and interdisciplinary researcher working across technology, human experience and spatial design.">
+  <title>Elaine Wang — Product, Research & Life</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='22' fill='%23202947'/%3E%3Cpath d='M15 18h8l9 15 9-15h8L36 40v8h-8v-8z' fill='%23f8f9fc'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --ink: #1a2034;
+      --paper: #f5f6f9;
+      --paper-2: #eceff5;
+      --line: rgba(43, 53, 84, .13);
+      --muted: #667087;
+      --blue: #4b5fcc;
+      --blue-deep: #202947;
+      --acid: #cdd8ff;
+      --pearl: #fbfcff;
+      --curve: 44px;
+      --max: 1240px;
+      --serif: Georgia, "Noto Serif SC", "Songti SC", SimSun, serif;
+      --sans: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 9% 8%, rgba(205,216,255,.34), transparent 22rem),
+        linear-gradient(180deg, #f8f9fc 0%, var(--paper) 52%, #f1f3f8 100%);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, summary { font: inherit; }
+    ::selection { color: white; background: var(--blue); }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 8px 12px;
+      color: white;
+      background: var(--ink);
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      background: rgba(248, 249, 252, .82);
+      backdrop-filter: blur(18px);
+    }
+    .header-inner {
+      width: min(calc(100% - 40px), var(--max));
+      height: 72px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: .94rem;
+      font-weight: 650;
+      letter-spacing: .02em;
+    }
+    .brand-mark {
+      width: 36px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 42% 58% 52% 48%;
+      color: white;
+      background: var(--blue);
+      font-family: var(--serif);
+      font-size: .78rem;
+    }
+    .main-nav { display: flex; align-items: center; gap: 25px; }
+    .main-nav a {
+      position: relative;
+      font-size: .86rem;
+      color: #4d5870;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -6px;
+      height: 1px;
+      background: var(--blue);
+      transition: right .25s ease;
+    }
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after { right: 0; }
+    .mobile-menu { display: none; }
+
+    main { overflow: clip; }
+    .shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--blue);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: .65fr 1.35fr;
+      gap: 64px;
+      align-items: start;
+      margin-bottom: 64px;
+    }
+    .section-head h2 {
+      max-width: 14ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.45rem, 5vw, 5.4rem);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -.045em;
+      text-wrap: balance;
+    }
+    .title-line { display: block; }
+    .section-intro {
+      max-width: 680px;
+      margin: 4px 0 0;
+      color: #44443f;
+      font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+      line-height: 1.85;
+    }
+    .section-no {
+      display: inline-block;
+      margin-right: 10px;
+      font-family: var(--sans);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      vertical-align: top;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 72px);
+      padding: clamp(70px, 9vw, 128px) 0 74px;
+      display: grid;
+      align-items: center;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: min(70vw, 900px);
+      height: min(46vw, 620px);
+      right: -14%;
+      top: 2%;
+      z-index: -1;
+      border-radius: 42% 58% 64% 36% / 48% 38% 62% 52%;
+      background: radial-gradient(circle at 42% 44%, rgba(193,205,249,.5), rgba(224,229,244,.12) 58%, transparent 72%);
+      filter: blur(10px);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: clamp(40px, 6vw, 94px);
+      align-items: center;
+    }
+    .hero h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(3.4rem, 5.8vw, 5.2rem);
+      font-weight: 500;
+      line-height: .98;
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+    .hero h1 em { color: var(--blue); font-style: normal; }
+    .hero h1 .title-line { white-space: nowrap; }
+    .hero-copy {
+      max-width: 560px;
+      margin: 34px 0 0;
+      color: #44443f;
+      font-size: clamp(1.04rem, 1.3vw, 1.22rem);
+      line-height: 1.9;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid rgba(32,41,71,.5);
+      border-radius: 999px;
+      font-size: .9rem;
+      transition: transform .2s ease, color .2s ease, background .2s ease;
+    }
+    .pill-link.primary { border-color: var(--blue); color: white; background: var(--blue); }
+    .pill-link:hover { transform: translateY(-2px); }
+
+    .hero-collage {
+      position: relative;
+      min-height: 620px;
+      isolation: isolate;
+    }
+    .collage-piece {
+      position: absolute;
+      overflow: hidden;
+      border: 8px solid var(--paper);
+      border-radius: 56px 20px 62px 24px;
+      box-shadow: 0 28px 76px rgba(48, 58, 92, .16);
+      transform: rotate(var(--r));
+      transition: transform .45s cubic-bezier(.2,.8,.2,1), z-index 0s;
+    }
+    .collage-piece:hover { z-index: 10; transform: rotate(0) scale(1.035); }
+    .collage-piece img { width: 100%; height: 100%; object-fit: cover; }
+    .piece-1 { --r: -4deg; width: 54%; height: 40%; top: 5%; left: 4%; }
+    .piece-2 { --r: 3deg; width: 52%; height: 41%; top: 12%; right: 0; border-radius: 22px 62px 28px 60px; }
+    .piece-3 { --r: -1.5deg; width: 58%; height: 40%; left: 19%; bottom: 6%; border-radius: 62px 24px 54px 24px; }
+    .collage-note {
+      position: absolute;
+      z-index: 8;
+      right: 3%;
+      bottom: 13%;
+      width: 190px;
+      padding: 18px 20px 20px;
+      color: var(--blue-deep);
+      background: rgba(222,228,255,.95);
+      border: 1px solid rgba(75,95,204,.16);
+      border-radius: 34px 14px 38px 18px;
+      box-shadow: 0 16px 42px rgba(30, 34, 45, .12);
+      transform: rotate(3deg);
+    }
+    .collage-note span { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .12em; }
+    .collage-note strong { display: block; margin-top: 8px; font-family: var(--serif); font-size: 1.18rem; line-height: 1.4; }
+    .collage-caption {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      font-size: .73rem;
+      letter-spacing: .12em;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    /* About */
+    .about { padding: 130px 0; color: white; background: radial-gradient(circle at 18% 18%, #33416d 0, var(--blue-deep) 42%, #161d34 100%); border-radius: 82px 82px 0 0; }
+    .about-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(56px, 9vw, 126px); align-items: center; }
+    .portrait-frame {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 48% 52% 32% 68% / 42% 45% 55% 58%;
+      background: #0c3a87;
+    }
+    .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+    .portrait-tag {
+      position: absolute;
+      right: -22px;
+      bottom: 8%;
+      width: 116px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 46% 54% 58% 42%;
+      color: var(--blue);
+      background: white;
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      text-align: center;
+      line-height: 1.2;
+      transform: rotate(8deg);
+    }
+    .about-copy .eyebrow { color: var(--acid); }
+    .about-copy h2 {
+      max-width: 11ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 5.8rem);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -.045em;
+      text-wrap: balance;
+    }
+    .about-copy > p {
+      max-width: 640px;
+      margin: 34px 0 0;
+      color: rgba(255,255,255,.84);
+      font-size: clamp(1.04rem, 1.35vw, 1.22rem);
+      line-height: 1.95;
+    }
+    .beliefs { margin-top: 48px; border-top: 1px solid rgba(255,255,255,.32); }
+    .belief {
+      display: grid;
+      grid-template-columns: 44px 150px 1fr;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,.25);
+      align-items: baseline;
+    }
+    .belief span { color: var(--acid); font-size: .75rem; letter-spacing: .12em; }
+    .belief strong { font-size: .98rem; }
+    .belief p { margin: 0; color: rgba(255,255,255,.72); font-size: .92rem; }
+
+    /* Projects */
+    .projects { padding: 140px 0 90px; }
+    .project-list { display: grid; gap: 28px; }
+    .project {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 510px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--curve);
+      background: rgba(251,252,255,.9);
+      box-shadow: 0 24px 70px rgba(50,60,94,.07);
+    }
+    .project:nth-child(even) .project-media { order: 2; }
+    .project-media { position: relative; min-height: 390px; overflow: hidden; background: #d8d8d2; }
+    .project-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .project:hover .project-media img { transform: scale(1.025); }
+    .project-index {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: white;
+      background: rgba(20,20,20,.75);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      backdrop-filter: blur(8px);
+    }
+    .project-body { padding: clamp(34px, 5vw, 72px); display: flex; flex-direction: column; justify-content: center; }
+    .project-meta { margin: 0 0 14px; color: var(--blue); font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .project h3 {
+      max-width: 14ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.15rem, 3.6vw, 4.2rem);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+    .project-lead { margin: 22px 0 0; color: #45453f; font-size: 1rem; line-height: 1.85; }
+    .project-story { display: grid; grid-template-columns: 86px 1fr; gap: 18px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .project-story strong { font-size: .76rem; letter-spacing: .08em; }
+    .project-story p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.75; }
+    .project-link { align-self: flex-start; margin-top: 30px; padding-bottom: 4px; border-bottom: 1px solid currentColor; color: var(--blue); font-size: .88rem; font-weight: 650; }
+
+    .ai-cover {
+      padding: 36px;
+      color: white;
+      background: radial-gradient(circle at 18% 8%, #6679e0 0, var(--blue) 35%, #303f9f 100%);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    .ai-cover .cover-kicker { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; }
+    .ai-cover .cover-question {
+      align-self: center;
+      max-width: 11ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 4.2vw, 4.8rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+    .ai-cover .cover-question .title-line { display: block; white-space: nowrap; }
+    .ai-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .ai-flow span { padding-top: 12px; border-top: 1px solid rgba(255,255,255,.45); font-size: .76rem; color: rgba(255,255,255,.78); }
+
+    .project-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .mini-project { overflow: hidden; border: 1px solid var(--line); border-radius: 38px; background: rgba(251,252,255,.9); box-shadow: 0 22px 60px rgba(50,60,94,.06); }
+    .mini-project img { width: 100%; aspect-ratio: 1.45; object-fit: cover; }
+    .mini-project-body { padding: 32px; }
+    .mini-project h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.8rem, 2.7vw, 3rem); font-weight: 500; line-height: 1.13; letter-spacing: -.03em; }
+    .mini-project p { margin: 18px 0 0; color: var(--muted); }
+
+    /* Experience */
+    .experience { padding: 130px 0; }
+    .timeline { display: grid; gap: 12px; }
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 150px 1.2fr 1fr;
+      gap: 36px;
+      padding: 28px 30px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: rgba(251,252,255,.76);
+      align-items: start;
+    }
+    .timeline-row time { color: var(--muted); font-size: .82rem; }
+    .timeline-row h3 { margin: 0; font-family: var(--serif); font-size: 1.45rem; font-weight: 500; line-height: 1.35; }
+    .timeline-row h3 span { display: block; margin-top: 4px; color: var(--blue); font-family: var(--sans); font-size: .82rem; font-weight: 650; }
+    .timeline-row p { margin: 0; color: var(--muted); font-size: .93rem; line-height: 1.75; }
+
+    /* Notes */
+    .notes { padding: 130px 0; color: white; background: radial-gradient(circle at 86% 15%, #303b64 0, #202947 42%, #151b30 100%); border-radius: 84px 84px 0 0; }
+    .notes .eyebrow { color: var(--acid); }
+    .notes .section-intro { color: rgba(255,255,255,.68); }
+    .note-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .note-card { min-height: 350px; padding: 32px 30px; border: 1px solid rgba(255,255,255,.13); border-radius: 34px 72px 34px 34px; background: rgba(255,255,255,.055); display: flex; flex-direction: column; }
+    .note-card:nth-child(2) { border-radius: 72px 34px 72px 34px; }
+    .note-card:nth-child(3) { border-radius: 34px 34px 34px 72px; }
+    .note-no { color: var(--acid); font-size: .74rem; letter-spacing: .12em; }
+    .note-card h3 { max-width: 12ch; margin: 64px 0 0; font-family: var(--serif); font-size: clamp(1.8rem, 2.7vw, 3rem); font-weight: 500; line-height: 1.16; text-wrap: balance; }
+    .note-card p { margin: auto 0 0; color: rgba(255,255,255,.67); font-size: .9rem; line-height: 1.8; }
+
+    /* Life */
+    .life { padding: 140px 0; }
+    .life-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(50px, 9vw, 120px); align-items: start; }
+    .life-quote {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.7rem, 5.4vw, 6.2rem);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -.05em;
+      text-wrap: balance;
+    }
+    .life-quote em { color: var(--blue); font-style: normal; }
+    .life-copy { padding-top: 12px; }
+    .life-copy > p { margin: 0; color: #45453f; font-size: 1.08rem; line-height: 1.95; }
+    .life-list { margin-top: 44px; border-top: 1px solid var(--ink); }
+    .life-item { display: grid; grid-template-columns: 110px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .life-item span { color: var(--muted); font-size: .8rem; }
+    .life-item strong { font-size: .94rem; font-weight: 600; }
+
+    /* Contact */
+    .contact { padding: 100px 0 50px; color: white; background: linear-gradient(135deg, #5266d0, #34469f 55%, #263577); border-radius: 88px 88px 0 0; }
+    .contact-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 36px;
+      align-items: end;
+      padding-bottom: 84px;
+    }
+    .contact h2 { max-width: 9ch; margin: 0; font-family: var(--serif); font-size: clamp(3.6rem, 7.3vw, 8.2rem); font-weight: 500; line-height: .98; letter-spacing: -.06em; text-wrap: balance; }
+    .contact h2 .title-line { white-space: nowrap; }
+    .contact-copy { max-width: 390px; }
+    .contact-copy p { margin: 0 0 28px; color: rgba(255,255,255,.78); font-size: 1.02rem; }
+    .contact-links { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .contact-links a { padding-bottom: 2px; border-bottom: 1px solid rgba(255,255,255,.6); }
+    .site-footer { display: flex; justify-content: space-between; gap: 20px; padding: 24px 0 0; border-top: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.65); font-size: .78rem; }
+
+    @media (max-width: 980px) {
+      .main-nav { display: none; }
+      .mobile-menu { display: block; position: relative; }
+      .mobile-menu summary { list-style: none; cursor: pointer; font-size: .86rem; }
+      .mobile-menu summary::-webkit-details-marker { display: none; }
+      .mobile-menu nav { position: absolute; right: 0; top: 36px; min-width: 180px; padding: 14px; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 18px 48px rgba(0,0,0,.12); }
+      .mobile-menu a { display: block; padding: 8px 4px; }
+      .hero-grid, .about-grid, .life-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 78px; }
+      .hero h1 { max-width: 10.5ch; }
+      .hero-collage { min-height: 590px; margin-top: 10px; }
+      .about-grid { max-width: 760px; }
+      .portrait-frame { width: min(82%, 520px); }
+      .project { grid-template-columns: 1fr; }
+      .project:nth-child(even) .project-media { order: 0; }
+      .project-pair { grid-template-columns: 1fr; }
+      .timeline-row { grid-template-columns: 130px 1fr; }
+      .timeline-row p { grid-column: 2; }
+      .section-head { grid-template-columns: 1fr; gap: 30px; }
+      .note-grid { grid-template-columns: 1fr; }
+      .note-card { min-height: 270px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.22); }
+      .note-card h3 { margin-top: 36px; }
+      .contact-line { display: grid; align-items: start; }
+    }
+
+    @media (max-width: 640px) {
+      body { line-height: 1.7; }
+      .shell, .header-inner { width: min(calc(100% - 28px), var(--max)); }
+      .header-inner { height: 64px; }
+      .brand span:last-child { display: none; }
+      .hero { min-height: auto; padding: 64px 0 56px; }
+      .hero h1 { font-size: clamp(2.45rem, 12.5vw, 4.1rem); line-height: 1; }
+      .hero-copy { margin-top: 26px; }
+      .hero-actions { margin-top: 28px; }
+      .hero-collage { min-height: 430px; }
+      .collage-piece { border-width: 5px; }
+      .piece-1 { width: 62%; height: 39%; top: 3%; left: 0; }
+      .piece-2 { width: 56%; height: 38%; top: 15%; right: -2%; }
+      .piece-3 { width: 70%; height: 40%; left: 8%; bottom: 4%; }
+      .collage-note { width: 148px; right: 0; bottom: 9%; padding: 12px 14px; }
+      .collage-note strong { font-size: .95rem; }
+      .collage-caption { display: none; }
+      .about, .projects, .experience, .notes, .life { padding: 90px 0; }
+      .portrait-frame { width: 92%; }
+      .portrait-tag { right: -10px; width: 94px; font-size: .9rem; }
+      .belief { grid-template-columns: 34px 1fr; }
+      .belief p { grid-column: 2; }
+      .section-head { margin-bottom: 44px; }
+      .project { min-height: 0; }
+      .project-media { min-height: 300px; }
+      .ai-cover { min-height: 390px; padding: 24px; }
+      .ai-cover .cover-question { font-size: 1.7rem; }
+      .ai-flow { grid-template-columns: 1fr 1fr; }
+      .project-body { padding: 30px 24px 36px; }
+      .project-story { grid-template-columns: 70px 1fr; }
+      .mini-project-body { padding: 26px 22px; }
+      .timeline-row { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+      .timeline-row p { grid-column: 1; margin-top: 6px; }
+      .note-card { padding: 26px 4px; }
+      .life-quote { font-size: clamp(2.8rem, 13vw, 4.6rem); }
+      .life-item { grid-template-columns: 90px 1fr; }
+      .contact { padding-top: 76px; }
+      .contact h2 { font-size: 2.65rem; }
+      .contact-line { padding-bottom: 64px; }
+      .site-footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-  <div class="reading-progress" aria-hidden="true"><span></span></div>
-  <a class="skip-link" href="#main"><span class="lang lang-zh">跳到正文</span><span class="lang lang-en">Skip to content</span></a>
-
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="王亦琳个人主页">
-      <span class="brand-mark">YW</span>
-      <span class="brand-name">Yilin Wang<small>王亦琳</small></span>
-    </a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="lang lang-zh">菜单</span><span class="lang lang-en">Menu</span></button>
-    <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-      <a href="#work"><span class="lang lang-zh">项目</span><span class="lang lang-en">Work</span></a>
-      <a href="#experience"><span class="lang lang-zh">实习</span><span class="lang lang-en">Experience</span></a>
-      <a href="#research"><span class="lang lang-zh">研究</span><span class="lang lang-en">Research</span></a>
-      <a href="#about"><span class="lang lang-zh">关于</span><span class="lang lang-en">About</span></a>
-      <a href="#contact"><span class="lang lang-zh">联系</span><span class="lang lang-en">Contact</span></a>
-    </nav>
-    <div class="language-switch" aria-label="Language"><button type="button" data-set-lang="zh" aria-pressed="true">中</button><span aria-hidden="true">/</span><button type="button" data-set-lang="en" aria-pressed="false">EN</button></div>
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="Back to home">
+        <span class="brand-mark">YW</span>
+        <span>Elaine Wang · 王亦琳</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#notes">Notes</a>
+        <a href="#life">Life</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <details class="mobile-menu">
+        <summary>Menu</summary>
+        <nav aria-label="Mobile navigation">
+          <a href="#about">About</a>
+          <a href="#projects">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#notes">Notes</a>
+          <a href="#life">Life</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </details>
+    </div>
   </header>
 
   <main id="main">
-    <section class="hero section-shell" aria-labelledby="hero-title">
-      <div class="hero-copy reveal">
-        <p class="hero-status"><span aria-hidden="true"></span><span class="lang lang-zh">坐标武汉 · 即将前往香港</span><span class="lang lang-en">Wuhan now · Hong Kong next</span></p>
-        <p class="eyebrow">AI Product · Research · Spatial Thinking</p>
-        <h1 id="hero-title"><span class="lang lang-zh">你好，我是<em>亦琳。</em></span><span class="lang lang-en">Hi, I'm <em>Yilin.</em></span></h1>
-        <p class="hero-kicker lang lang-zh">我把复杂问题，整理成简单、可用、值得发生的产品。</p>
-        <p class="hero-kicker lang lang-en">I turn complex questions into products that feel simple, useful, and worth building.</p>
-        <p class="hero-lead lang lang-zh">一名跨越 AI 产品、战略研究与环境设计的年轻创作者。我的工作从洞察开始，以清晰的产品判断和扎实的跨团队落地结束。</p>
-        <p class="hero-lead lang lang-en">An emerging creator working across AI product, strategy research, and environmental design—from first insight to aligned, testable delivery.</p>
-        <div class="hero-actions"><a class="button button-primary magnetic" href="#work"><span class="lang lang-zh">看看我做过什么</span><span class="lang lang-en">See what I've built</span><span aria-hidden="true">↘</span></a><a class="button button-quiet magnetic" href="portfolio.html"><span class="lang lang-zh">打开完整作品集</span><span class="lang lang-en">Open full portfolio</span><span aria-hidden="true">↗</span></a></div>
-      </div>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Product × Research × Design</p>
+          <h1 id="hero-title"><span class="title-line">Hi, I am</span><span class="title-line"><em>Elaine.</em></span></h1>
+          <p class="hero-copy">I am an AI product thinker and interdisciplinary researcher. I connect technology with real human contexts, turning ambiguous questions into clear, testable product directions people can understand and use.</p>
+          <div class="hero-actions">
+            <a class="pill-link primary" href="#projects">Selected work</a>
+            <a class="pill-link" href="#about">About me</a>
+          </div>
+        </div>
 
-      <div class="hero-stage reveal" aria-label="王亦琳的个人与项目拼贴">
-        <div class="stage-orbit" aria-hidden="true"></div>
-        <figure class="portrait-frame tilt-card"><div class="portrait-crop"><img src="assets/profile-strip.png" width="848" height="209" alt="王亦琳肖像"></div><figcaption><span class="lang lang-zh">认真研究，也认真创造</span><span class="lang lang-en">Research deeply. Make thoughtfully.</span></figcaption></figure>
-        <a class="project-ticket tilt-card" href="portfolio.html#page-03" aria-label="查看 Scroll Urbanism 项目"><span class="ticket-pin" aria-hidden="true"></span><img src="assets/pages/page-03.jpg" width="1853" height="1310" alt="Scroll Urbanism 项目封面"><strong>Scroll Urbanism ↗</strong></a>
-        <div class="stage-note"><span class="note-label">Currently</span><strong><span class="lang lang-zh">香港大学<br>硕士新生</span><span class="lang lang-en">Incoming master's<br>student at HKU</span></strong></div>
-        <span class="hero-stamp" aria-hidden="true">YILIN<br>WANG</span>
+        <div class="hero-collage" aria-label="A collage of selected projects">
+          <figure class="collage-piece piece-1">
+            <img src="assets/scroll-cover.jpg" alt="Cover of the Scroll Urbanism project">
+          </figure>
+          <figure class="collage-piece piece-2">
+            <img src="assets/transit-research.jpg" alt="Cover of a public transit equity study in Shenzhen">
+          </figure>
+          <figure class="collage-piece piece-3">
+            <img src="assets/scroll-space.jpg" alt="Public space proposal for a Xuan paper heritage town">
+          </figure>
+          <div class="collage-note" aria-hidden="true">
+            <span>MY FIELD NOTES</span>
+            <strong>Observe · Define<br>Build · Validate</strong>
+          </div>
+          <span class="collage-caption">Selected work · 2024—2026</span>
+        </div>
       </div>
-
-      <ul class="hero-metrics" aria-label="Highlights">
-        <li><strong>Top 10%</strong><span class="lang lang-zh">本科专业排名</span><span class="lang lang-en">undergraduate rank</span></li>
-        <li><strong>05</strong><span class="lang lang-zh">段跨行业实践</span><span class="lang lang-en">cross-industry roles</span></li>
-        <li><strong>02</strong><span class="lang lang-zh">篇已发表研究</span><span class="lang lang-en">published studies</span></li>
-        <li><strong>110</strong><span class="lang lang-zh">篇原创内容</span><span class="lang lang-en">original posts</span></li>
-      </ul>
     </section>
 
-    <div class="method-marquee" aria-hidden="true"><div>OBSERVE · FRAME · BUILD · VALIDATE · OBSERVE · FRAME · BUILD · VALIDATE · OBSERVE · FRAME · BUILD · VALIDATE ·</div></div>
-
-    <section class="field-intro section-shell" id="about" aria-labelledby="about-title">
-      <div class="section-marker reveal"><span>00</span><span>Field note</span></div>
-      <div class="field-intro-grid">
-        <h2 id="about-title" class="reveal"><span class="lang lang-zh">在逻辑与<br><em>感知</em>之间。</span><span class="lang lang-en">Between logic<br>and <em>sense.</em></span></h2>
-        <div class="field-copy reveal">
-          <p class="large-copy lang lang-zh">环境设计训练我观察真实的人、空间与行为；AI 产品实践让我把这些观察转译为需求、流程、原型与可验证的判断。</p>
-          <p class="large-copy lang lang-en">Environmental design taught me to notice real people, spaces, and behavior. AI product work taught me to translate those signals into requirements, flows, prototypes, and testable decisions.</p>
-          <div class="method-list">
-            <article><span>01</span><h3><span class="lang lang-zh">看见信号</span><span class="lang lang-en">Find the signal</span></h3><p><span class="lang lang-zh">用户、市场、场景、技术与竞品研究</span><span class="lang lang-en">Users, market, context, technology, competition</span></p></article>
-            <article><span>02</span><h3><span class="lang lang-zh">定义判断</span><span class="lang lang-en">Frame the decision</span></h3><p><span class="lang lang-zh">机会空间、优先级、业务规则与验收标准</span><span class="lang lang-en">Opportunity, priority, rules, acceptance criteria</span></p></article>
-            <article><span>03</span><h3><span class="lang lang-zh">推动闭环</span><span class="lang lang-en">Close the loop</span></h3><p><span class="lang lang-zh">跨团队对齐、体验验证、数据与反馈复盘</span><span class="lang lang-en">Alignment, experience validation, data and feedback</span></p></article>
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="shell about-grid">
+        <div class="portrait-frame">
+          <img src="assets/yilin-portrait.jpg" alt="Portrait of Elaine Wang">
+          <span class="portrait-tag">Elaine<br>Wang</span>
+        </div>
+        <div class="about-copy">
+          <p class="eyebrow">01 · About me</p>
+          <h2 id="about-title"><span class="title-line">I start with reality,</span><span class="title-line">then design.</span></h2>
+          <p>My training in environmental design taught me to notice people, space and behaviour. Product work taught me how to translate those observations into requirements, flows, prototypes and decisions that can be tested. I care less about ideas that merely look right, and more about whether they answer a real situation, make sense to a team and can move forward.</p>
+          <div class="beliefs" aria-label="How I work">
+            <div class="belief"><span>01</span><strong>Begin in context</strong><p>Understand why people behave as they do before deciding what to build.</p></div>
+            <div class="belief"><span>02</span><strong>Make it legible</strong><p>A good product document lets different roles see the same problem.</p></div>
+            <div class="belief"><span>03</span><strong>Close the loop</strong><p>Insight, review, validation and reflection should each leave evidence.</p></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="work-section" id="work" aria-labelledby="work-title">
-      <div class="section-shell">
-        <div class="section-top reveal">
-          <div><div class="section-marker"><span>01</span><span>Selected fieldwork</span></div><h2 id="work-title"><span class="lang lang-zh">我做过的事，<br><em>不只是一张图。</em></span><span class="lang lang-en">The work is more<br>than the output.</span></h2></div>
-          <p><span class="lang lang-zh">从 AI 产品机会到空间公平研究：每个案例都按问题、角色、过程和产出展开。</span><span class="lang lang-en">From AI product opportunities to spatial-equity research—each case is framed through the problem, role, process, and output.</span></p>
-        </div>
-        <div class="case-filters reveal" role="group" aria-label="筛选项目">
-          <button type="button" data-case-filter="all" aria-pressed="true"><span class="lang lang-zh">全部</span><span class="lang lang-en">All</span></button>
-          <button type="button" data-case-filter="product" aria-pressed="false"><span class="lang lang-zh">AI 产品</span><span class="lang lang-en">AI product</span></button>
-          <button type="button" data-case-filter="research" aria-pressed="false"><span class="lang lang-zh">研究</span><span class="lang lang-en">Research</span></button>
-          <button type="button" data-case-filter="spatial" aria-pressed="false"><span class="lang lang-zh">空间设计</span><span class="lang lang-en">Spatial design</span></button>
+    <section class="projects" id="projects" aria-labelledby="projects-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">02 · Selected projects</p>
+            <h2 id="projects-title"><span class="title-line">The work is more</span><span class="title-line">than the feature.</span></h2>
+          </div>
+          <p class="section-intro">I prefer to tell a project through the question, the judgement, the action and the outcome. These four cases show how I work across AI products, education technology, spatial research and cultural renewal.</p>
         </div>
 
-        <div class="case-stack" aria-live="polite">
-          <article class="case-study case-product reveal" data-case-category="product">
-            <div class="case-header"><div class="case-index"><span>Case 01</span><span>AI Product · 2026</span></div><h3><span class="lang lang-zh">电视端 AI 快剪：<br>从机会洞察到体验验证</span><span class="lang lang-en">AI quick-edit for TV:<br>from opportunity to validation</span></h3><p class="case-org">TCL · <span class="lang lang-zh">软件工程中心 / 产品规划部</span><span class="lang lang-en">Software Engineering Center / Product Planning</span></p></div>
-            <div class="case-facts">
-              <div><span>Role</span><strong><span class="lang lang-zh">专题 Owner</span><span class="lang lang-en">Initiative owner</span></strong></div>
-              <div><span>Surface</span><strong><span class="lang lang-zh">电视 · 手机 · 家庭终端</span><span class="lang lang-en">TV · Mobile · Home</span></strong></div>
-              <div><span>Stage</span><strong><span class="lang lang-zh">洞察 → 评审 → 验证</span><span class="lang lang-en">Insight → Review → Validate</span></strong></div>
-              <div><span>Collab</span><strong><span class="lang lang-zh">6 类协作职能</span><span class="lang lang-en">6 partner functions</span></strong></div>
+        <div class="project-list">
+          <article class="project">
+            <div class="project-media ai-cover">
+              <span class="cover-kicker">TCL · AI Imaging · 2026</span>
+              <p class="cover-question"><span class="title-line">How can AI editing</span><span class="title-line">become a real</span><span class="title-line">living-room experience?</span></p>
+              <div class="ai-flow" aria-label="Project process"><span>Signals</span><span>Context</span><span>Review</span><span>Validation</span></div>
+              <span class="project-index">CASE 01</span>
             </div>
-            <div class="case-body">
-              <div class="case-narrative">
-                <div class="case-block"><span class="block-label">Overview</span><p class="lang lang-zh">围绕电视、手机与家庭多终端生态，研究生成式 AI 与影像产品机会。我负责电视端 AI 快剪专题，把分散的技术能力和使用场景组织成可讨论、可评审的产品方向。</p><p class="lang lang-en">I explored generative-AI and imaging opportunities across TV, mobile, and home devices. For the TV quick-edit initiative, I organized fragmented capabilities and scenarios into a product direction the team could review and test.</p></div>
-                <div class="owned-list"><h4><span class="lang lang-zh">我负责什么</span><span class="lang lang-en">What I owned</span></h4><ol>
-                  <li><strong><span class="lang lang-zh">机会扫描</span><span class="lang lang-en">Opportunity scan</span></strong><span><span class="lang lang-zh">从终端、场景、技术与竞品出发，梳理生成式 AI 和影像机会。</span><span class="lang lang-en">Mapped opportunities across devices, contexts, enabling technology, and competitors.</span></span></li>
-                  <li><strong><span class="lang lang-zh">方案组织</span><span class="lang lang-en">Concept framing</span></strong><span><span class="lang lang-zh">以专题 Owner 身份组织关键场景、任务路径、方案评审与优先级判断。</span><span class="lang lang-en">Structured key scenarios, task paths, concept reviews, and priority decisions as initiative owner.</span></span></li>
-                  <li><strong><span class="lang lang-zh">体验闭环</span><span class="lang lang-en">Experience loop</span></strong><span><span class="lang lang-zh">协调预研、算法、客户端、嵌入式、设计与业务团队，推进体验验证与问题收敛。</span><span class="lang lang-en">Aligned research, algorithms, client, embedded, design, and business teams around validation and issue closure.</span></span></li>
-                </ol></div>
-                <p class="takeaway"><span>Key takeaway</span><em class="lang lang-zh">AI 产品不是功能清单，而是技术能力、用户场景与交付约束之间的取舍。</em><em class="lang lang-en">An AI product is not a feature list; it is a set of choices across capability, context, and delivery constraints.</em></p>
-              </div>
-              <figure class="product-map product-map-tcl" aria-label="TCL AI 快剪项目流程示意">
-                <div class="map-caption"><span>Evidence map</span><span>01 / 04</span></div>
-                <div class="map-canvas">
-                  <div class="map-node map-node-a"><span>01</span><strong><span class="lang lang-zh">机会信号</span><span class="lang lang-en">Signals</span></strong><small>Device · Scenario · Tech</small></div>
-                  <div class="map-node map-node-b"><span>02</span><strong><span class="lang lang-zh">快剪概念</span><span class="lang lang-en">Quick-edit concept</span></strong><small>Flow · Value · Priority</small></div>
-                  <div class="map-node map-node-c"><span>03</span><strong><span class="lang lang-zh">多方评审</span><span class="lang lang-en">Cross-team review</span></strong><small>6 functions aligned</small></div>
-                  <div class="map-node map-node-d"><span>04</span><strong><span class="lang lang-zh">体验验证</span><span class="lang lang-en">Experience check</span></strong><small>Walkthrough · Issues</small></div>
-                  <span class="map-route route-one" aria-hidden="true"></span><span class="map-route route-two" aria-hidden="true"></span><span class="map-route route-three" aria-hidden="true"></span>
-                  <p class="confidential-note"><span class="lang lang-zh">因实习保密，本图仅展示脱敏后的工作路径。</span><span class="lang lang-en">A de-identified workflow is shown due to internship confidentiality.</span></p>
-                </div>
-              </figure>
+            <div class="project-body">
+              <p class="project-meta">AI Product · Topic Owner</p>
+              <h3>AI Quick Edit for TV</h3>
+              <p class="project-lead">Across TCL’s TV, mobile and connected-home ecosystem, I explored opportunities in generative AI and imaging, while owning the product direction for an AI-assisted video editing concept on TV.</p>
+              <div class="project-story"><strong>My role</strong><p>I shaped the product judgement through users, contexts, device strengths and technical maturity; aligned research, algorithm, client, embedded, design and business teams; and used scenario walkthroughs and sample comparisons to refine the experience.</p></div>
+              <div class="project-story"><strong>Takeaway</strong><p>An AI product is not a list of capabilities. It is a sequence of trade-offs between technical possibility, user value and delivery reality.</p></div>
             </div>
           </article>
 
-          <article class="case-study case-iflytek reveal" data-case-category="product">
-            <div class="case-header"><div class="case-index"><span>Case 02</span><span>AI Education · 2026</span></div><h3><span class="lang lang-zh">多角色教育产品：<br>把需求推进到版本闭环</span><span class="lang lang-en">Multi-role EdTech:<br>turning needs into release loops</span></h3><p class="case-org">iFLYTEK · <span class="lang lang-zh">AI 产品经理实习</span><span class="lang lang-en">AI Product Management Internship</span></p></div>
-            <div class="case-facts">
-              <div><span>Scope</span><strong><span class="lang lang-zh">3 条产品线</span><span class="lang lang-en">3 product lines</span></strong></div><div><span>Users</span><strong><span class="lang lang-zh">4 类关键角色</span><span class="lang lang-en">4 key user roles</span></strong></div><div><span>Output</span><strong>PRD · Prototype · Rules</strong></div><div><span>Loop</span><strong><span class="lang lang-zh">需求池 → 版本 → 复盘</span><span class="lang lang-en">Pool → Release → Review</span></strong></div>
+          <article class="project">
+            <div class="project-media ai-cover" style="background:#171717">
+              <span class="cover-kicker">iFLYTEK · AI Education · 2026</span>
+              <p class="cover-question"><span class="title-line">How can feedback from</span><span class="title-line">four user groups enter</span><span class="title-line">one product rhythm?</span></p>
+              <div class="ai-flow" aria-label="Product loop"><span>Clarify</span><span>Define</span><span>Deliver</span><span>Reflect</span></div>
+              <span class="project-index">CASE 02</span>
             </div>
-            <div class="case-body case-body-reverse">
-              <figure class="product-map product-map-edu" aria-label="科大讯飞教育产品需求闭环示意">
-                <div class="map-caption"><span>Service blueprint</span><span>02 / 04</span></div>
-                <div class="edu-canvas">
-                  <div class="role-rail"><span><i>T</i><small><span class="lang lang-zh">教师</span><span class="lang lang-en">Teacher</span></small></span><span><i>S</i><small><span class="lang lang-zh">学生</span><span class="lang lang-en">Student</span></small></span><span><i>O</i><small><span class="lang lang-zh">运营</span><span class="lang lang-en">Ops</span></small></span><span><i>C</i><small><span class="lang lang-zh">客服</span><span class="lang lang-en">Support</span></small></span></div>
-                  <div class="blueprint-flow"><div><span>01</span><strong><span class="lang lang-zh">澄清问题</span><span class="lang lang-en">Clarify</span></strong><small>Signal → Need</small></div><div><span>02</span><strong><span class="lang lang-zh">定义规则</span><span class="lang lang-en">Specify</span></strong><small>PRD · Flow · Logic</small></div><div><span>03</span><strong><span class="lang lang-zh">进入版本</span><span class="lang lang-en">Release</span></strong><small>Priority · Acceptance</small></div><div><span>04</span><strong><span class="lang lang-zh">数据复盘</span><span class="lang lang-en">Review</span></strong><small>Usage · Feedback</small></div></div>
-                  <p class="confidential-note"><span class="lang lang-zh">展示方法框架，不包含企业界面与业务数据。</span><span class="lang lang-en">Method only; no proprietary UI or business data is shown.</span></p>
-                </div>
-              </figure>
-              <div class="case-narrative">
-                <div class="case-block"><span class="block-label">Overview</span><p class="lang lang-zh">服务批阅机、数智作业与智学网，面对教师、学生、运营和客服的不同诉求。我把模糊反馈转成业务规则、交互流程和验收条件，并维护从需求池到版本复盘的持续节奏。</p><p class="lang lang-en">Across marking devices, digital homework, and Zhixue, I translated needs from teachers, students, operations, and support into rules, interaction flows, and acceptance criteria—then kept the requirement-to-release loop moving.</p></div>
-                <div class="owned-list"><h4><span class="lang lang-zh">我负责什么</span><span class="lang lang-en">What I owned</span></h4><ol>
-                  <li><strong><span class="lang lang-zh">需求分析</span><span class="lang lang-en">Requirement framing</span></strong><span><span class="lang lang-zh">区分表层反馈与核心任务，补齐角色、场景、规则和异常路径。</span><span class="lang lang-en">Separated surface requests from core jobs, roles, rules, and exception paths.</span></span></li>
-                  <li><strong><span class="lang lang-zh">产品表达</span><span class="lang lang-en">Product specification</span></strong><span><span class="lang lang-zh">产出 PRD、原型、业务规则与验收标准，降低协作歧义。</span><span class="lang lang-en">Produced PRDs, prototypes, business rules, and acceptance criteria to reduce ambiguity.</span></span></li>
-                  <li><strong><span class="lang lang-zh">版本运营</span><span class="lang lang-en">Release operations</span></strong><span><span class="lang lang-zh">维护需求池与版本清单，结合使用数据和反馈定位核心链路问题。</span><span class="lang lang-en">Managed the pool and release list, using product data and feedback to identify friction in core journeys.</span></span></li>
-                </ol></div>
-                <p class="takeaway"><span>Key takeaway</span><em class="lang lang-zh">好需求不是写得更长，而是让不同角色对同一个问题形成同一份理解。</em><em class="lang lang-en">A good requirement is not longer; it gives different roles the same understanding of the problem.</em></p>
-              </div>
+            <div class="project-body">
+              <p class="project-meta">AI Education · Product Intern</p>
+              <h3>A Multi-role Education Product Loop</h3>
+              <p class="project-lead">Across three AI education products, I worked with the needs of teachers, students, operations and customer support, translating scattered feedback into clear business rules, flows and acceptance criteria.</p>
+              <div class="project-story"><strong>My role</strong><p>I maintained the demand pool and release scope, wrote PRDs, mapped edge cases and built prototypes. Usage data and frontline feedback helped me locate friction in the core journey and move requests from “someone asked” to “the team can validate it.”</p></div>
+              <div class="project-story"><strong>Takeaway</strong><p>A strong requirement is not longer. It gives different roles one shared understanding of the problem.</p></div>
             </div>
           </article>
 
-          <article class="case-study case-research reveal" data-case-category="research">
-            <div class="case-header"><div class="case-index"><span>Case 03</span><span>Spatial Research · 2025</span></div><h3>Urban Villages<br>Left Behind?</h3><p class="case-org"><span class="lang lang-zh">深圳城中村公共交通空间公平性研究</span><span class="lang lang-en">A spatial-equity analysis of public transit in Shenzhen</span></p></div>
-            <div class="case-facts case-facts-data"><div><span>Method</span><strong>100m</strong><small><span class="lang lang-zh">缓冲区分析</span><span class="lang lang-en">buffer analysis</span></small></div><div><span>Metro gap</span><strong>500m+</strong><small><span class="lang lang-zh">城中村平均更远</span><span class="lang lang-en">farther on average</span></small></div><div><span>Bus gap</span><strong>≈120m</strong><small><span class="lang lang-zh">城中村平均更远</span><span class="lang lang-en">farther on average</span></small></div><div><span>Moran's I</span><strong>.439 / .472</strong><small><span class="lang lang-zh">地铁 / 公交</span><span class="lang lang-en">metro / bus</span></small></div></div>
-            <div class="case-body">
-              <div class="case-narrative"><div class="case-block"><span class="block-label">Question</span><p class="lang lang-zh">深圳快速城市化过程中，城中村与正式居住区是否获得了同等水平的公共交通资源？我以单一作者身份，将社区边界、地铁、公交和住宅数据组合为可比较的空间证据。</p><p class="lang lang-en">Do Shenzhen's urban villages and formal residential areas receive equitable public-transit access? As sole author, I combined neighborhood boundaries, metro, bus, and residential data into comparable spatial evidence.</p></div>
-                <div class="research-methods"><span>OpenStreetMap</span><span>Baidu Maps API</span><span>Global Moran's I</span><span>LISA</span><span>Getis-Ord G</span><span>Negative binomial regression</span></div>
-                <p class="lang lang-zh">结果显示正式居住区的交通设施密度与分布更均衡，而城中村更容易出现网络碎片化和系统性供给不足。研究发表于 <em>Infrastructure Reports</em>。</p><p class="lang lang-en">The results indicate denser, more balanced provision in formal residential areas, while urban villages face more fragmented networks and systematic under-provision. Published in <em>Infrastructure Reports</em>.</p>
-                <div class="case-links"><a href="https://doi.org/10.63808/ir.v1i3.201" target="_blank" rel="noopener noreferrer">DOI ↗</a><a href="portfolio.html#page-24"><span class="lang lang-zh">查看研究图册</span><span class="lang lang-en">View visual study</span> ↗</a></div>
+          <div class="project-pair">
+            <article class="mini-project">
+              <img src="assets/transit-research.jpg" alt="Visual study for Urban Villages Left Behind">
+              <div class="mini-project-body">
+                <p class="project-meta">Spatial Research · Sole Author · 2025</p>
+                <h3>Urban Villages Left Behind?</h3>
+                <p>I combined neighbourhood boundaries, bus, metro and housing data into comparable spatial evidence, examining how transit access differs between urban villages and formal communities in Shenzhen.</p>
+                <a class="project-link" href="https://doi.org/10.63808/ir.v1i3.201" target="_blank" rel="noreferrer">Read the paper ↗</a>
               </div>
-              <figure class="case-image tilt-card"><img src="assets/pages/page-24.jpg" width="1853" height="1310" loading="lazy" alt="Traffic Equity 研究封面，展示深圳城中村街巷"><figcaption><span>Evidence 03</span><span>Shenzhen · 2025</span></figcaption></figure>
-            </div>
-          </article>
-
-          <article class="case-study case-spatial reveal" data-case-category="spatial">
-            <div class="case-header"><div class="case-index"><span>Case 04</span><span>Cultural Renewal · 2024—2025</span></div><h3>Scroll<br>Urbanism</h3><p class="case-org"><span class="lang lang-zh">宣纸文化小镇与公共空间更新</span><span class="lang lang-en">A Xuan paper-inspired cultural town and public-space renewal</span></p></div>
-            <div class="case-facts"><div><span>Role</span><strong>Team Lead</strong></div><div><span>Place</span><strong><span class="lang lang-zh">安徽宣城 · 小岭村</span><span class="lang lang-en">Xiaoling Village, Anhui</span></strong></div><div><span>Theme</span><strong><span class="lang lang-zh">宣纸非遗 · 山水叙事</span><span class="lang lang-en">Xuan paper · Landscape</span></strong></div><div><span>Output</span><strong><span class="lang lang-zh">规划 · 建筑 · 景观 · 设施</span><span class="lang lang-en">Plan · Space · Landscape</span></strong></div></div>
-            <div class="case-body case-body-reverse">
-              <figure class="case-image case-image-spatial tilt-card"><img src="assets/pages/page-09.jpg" width="1853" height="1310" loading="lazy" alt="Scroll Urbanism 宣纸文化小镇公共空间效果图"><figcaption><span>Evidence 04</span><span>Xuancheng · 2025</span></figcaption></figure>
-              <div class="case-narrative"><div class="case-block"><span class="block-label">Overview</span><p class="lang lang-zh">项目以《千里江山图》的卷轴与山水意境为叙事线索，将宣纸非遗、现代景观与生态旅游连接起来，更新小岭村及宣纸工厂周边的公共空间。</p><p class="lang lang-en">The project uses the scroll and landscape language of <em>A Thousand Li of Rivers and Mountains</em> to connect Xuan-paper heritage, contemporary landscape, and ecological tourism around Xiaoling Village.</p></div>
-                <div class="owned-list"><h4><span class="lang lang-zh">设计路径</span><span class="lang lang-en">Design path</span></h4><ol><li><strong><span class="lang lang-zh">文化转译</span><span class="lang lang-en">Cultural translation</span></strong><span><span class="lang lang-zh">把卷轴、山水和造纸工艺转成总体规划与空间语言。</span><span class="lang lang-en">Translated scroll, landscape, and papermaking into planning and spatial language.</span></span></li><li><strong><span class="lang lang-zh">系统组织</span><span class="lang lang-en">System design</span></strong><span><span class="lang lang-zh">串联游客中心、文化广场、体验工坊、廊道与生态休闲区。</span><span class="lang lang-en">Connected visitor, plaza, workshop, corridor, and ecological programs.</span></span></li><li><strong><span class="lang lang-zh">团队交付</span><span class="lang lang-en">Team delivery</span></strong><span><span class="lang lang-zh">作为组长统筹规划、建筑、景观、设施与最终视觉表达。</span><span class="lang lang-en">Led planning, architecture, landscape, facilities, and final visual storytelling.</span></span></li></ol></div>
-                <div class="case-links"><a href="portfolio.html#page-03"><span class="lang lang-zh">浏览完整项目 7 页</span><span class="lang lang-en">Browse all 7 pages</span> ↗</a></div>
+            </article>
+            <article class="mini-project">
+              <img src="assets/scroll-space.jpg" alt="Public space concept for Scroll Urbanism">
+              <div class="mini-project-body">
+                <p class="project-meta">Cultural Renewal · Team Lead · 2024—2025</p>
+                <h3>Scroll Urbanism</h3>
+                <p>Using the scroll and landscape language of traditional Chinese painting, this project connects Xuan paper heritage, contemporary landscape and ecological tourism into one experiential public-space system.</p>
+                <a class="project-link" href="https://yizero618.github.io/portfolio.html#page-03" target="_blank" rel="noreferrer">View the full project ↗</a>
               </div>
-            </div>
-          </article>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="experience-section section-shell" id="experience" aria-labelledby="experience-title">
-      <div class="section-top section-top-compact reveal"><div><div class="section-marker"><span>02</span><span>Experience dossiers</span></div><h2 id="experience-title"><span class="lang lang-zh">五段实践，<br><em>一条成长线。</em></span><span class="lang lang-en">Five roles,<br>one learning curve.</span></h2></div><p><span class="lang lang-zh">点击每一段经历，查看范围、职责、产出与复盘。</span><span class="lang lang-en">Open each dossier for scope, ownership, output, and reflection.</span></p></div>
-      <div class="experience-list">
-        <details class="experience-item reveal" open>
-          <summary><span class="experience-no">01</span><time>2026.07—08</time><span class="experience-title"><small>TCL · <span class="lang lang-zh">软件工程中心</span><span class="lang lang-en">Software Engineering Center</span></small><strong><span class="lang lang-zh">AI 产品经理实习生</span><span class="lang lang-en">AI Product Manager Intern</span></strong></span><span class="experience-brief"><span class="lang lang-zh">电视端 AI 快剪专题 Owner</span><span class="lang lang-en">Owned an AI quick-edit initiative for TV</span></span><span class="experience-toggle" aria-hidden="true"></span></summary>
-          <div class="experience-panel"><div class="scope-strip"><div><span>Role</span><strong><span class="lang lang-zh">专题 Owner</span><span class="lang lang-en">Initiative owner</span></strong></div><div><span>Domain</span><strong>GenAI · Imaging</strong></div><div><span>Surface</span><strong>TV · Mobile · Home</strong></div><div><span>Partners</span><strong><span class="lang lang-zh">6 类职能</span><span class="lang lang-en">6 functions</span></strong></div></div><div class="panel-columns"><div><h4>Overview</h4><p class="lang lang-zh">围绕多终端生态开展生成式 AI 与影像产品洞察，把技术能力、用户场景与业务目标组织成可评审的产品方向。</p><p class="lang lang-en">Explored GenAI and imaging opportunities across a multi-device ecosystem, turning capability, context, and business goals into reviewable directions.</p></div><div><h4>What I owned</h4><ul><li><span class="lang lang-zh">机会研究与场景定义</span><span class="lang lang-en">Opportunity research and scenario framing</span></li><li><span class="lang lang-zh">方案评审与优先级判断</span><span class="lang lang-en">Concept reviews and prioritization</span></li><li><span class="lang lang-zh">跨团队体验验证与问题收敛</span><span class="lang lang-en">Cross-team validation and issue closure</span></li></ul></div></div></div>
-        </details>
-        <details class="experience-item reveal">
-          <summary><span class="experience-no">02</span><time>2026.03—06</time><span class="experience-title"><small>iFLYTEK · <span class="lang lang-zh">科大讯飞</span><span class="lang lang-en">AI Education</span></small><strong><span class="lang lang-zh">AI 产品经理实习生</span><span class="lang lang-en">AI Product Manager Intern</span></strong></span><span class="experience-brief"><span class="lang lang-zh">多角色需求与版本闭环</span><span class="lang lang-en">Multi-role requirements and release loop</span></span><span class="experience-toggle" aria-hidden="true"></span></summary>
-          <div class="experience-panel"><div class="scope-strip"><div><span>Products</span><strong><span class="lang lang-zh">3 条产品线</span><span class="lang lang-en">3 product lines</span></strong></div><div><span>Users</span><strong><span class="lang lang-zh">4 类角色</span><span class="lang lang-en">4 user roles</span></strong></div><div><span>Artifacts</span><strong>PRD · Prototype</strong></div><div><span>Ops</span><strong>Pool · Release · Review</strong></div></div><div class="panel-columns"><div><h4>Overview</h4><p class="lang lang-zh">服务批阅机、数智作业与智学网，把来自教师、学生、运营和客服的反馈转化为产品定义与版本任务。</p><p class="lang lang-en">Supported marking devices, digital homework, and Zhixue by translating teacher, student, operations, and support feedback into product definitions and release work.</p></div><div><h4>What I owned</h4><ul><li><span class="lang lang-zh">需求澄清、流程与异常路径</span><span class="lang lang-en">Needs, flows, and exception paths</span></li><li><span class="lang lang-zh">PRD、原型、规则、验收标准</span><span class="lang lang-en">PRDs, prototypes, rules, acceptance criteria</span></li><li><span class="lang lang-zh">需求池、版本清单与数据复盘</span><span class="lang lang-en">Requirement pool, releases, and data reviews</span></li></ul></div></div></div>
-        </details>
-        <details class="experience-item reveal"><summary><span class="experience-no">03</span><time>2026.01—03</time><span class="experience-title"><small><span class="lang lang-zh">招商银行武汉分行</span><span class="lang lang-en">China Merchants Bank, Wuhan</span></small><strong><span class="lang lang-zh">销售运营助理</span><span class="lang lang-en">Sales Operations Assistant</span></strong></span><span class="experience-brief"><span class="lang lang-zh">把活动、数据与客户跟进串成流程</span><span class="lang lang-en">Connected campaigns, data, and customer follow-up</span></span><span class="experience-toggle" aria-hidden="true"></span></summary><div class="experience-panel experience-panel-compact"><ul><li><span class="lang lang-zh">梳理活动上线流程与检查项</span><span class="lang lang-en">Structured campaign launch flows and checklists</span></li><li><span class="lang lang-zh">监控经营表现、客户标签与重点客户异动</span><span class="lang lang-en">Monitored performance, segments, and key-account changes</span></li><li><span class="lang lang-zh">协同销售推进潜力客户转化</span><span class="lang lang-en">Supported sales conversion of high-potential customers</span></li></ul></div></details>
-        <details class="experience-item reveal"><summary><span class="experience-no">04</span><time>2025.03—08</time><span class="experience-title"><small><span class="lang lang-zh">湖北省城建设计院</span><span class="lang lang-en">Hubei Urban Construction Design Institute</span></small><strong><span class="lang lang-zh">项目运营助理</span><span class="lang lang-en">Project Operations Assistant</span></strong></span><span class="experience-brief"><span class="lang lang-zh">智慧路灯原型 + 110 篇原创内容</span><span class="lang lang-en">Smart-lighting prototypes + 110 original posts</span></span><span class="experience-toggle" aria-hidden="true"></span></summary><div class="experience-panel experience-panel-compact"><ul><li><span class="lang lang-zh">参与智慧路灯产品设计与项目推进</span><span class="lang lang-en">Supported smart-streetlight product design and delivery</span></li><li><span class="lang lang-zh">使用 Figma / Axure 完成原型与交互表达</span><span class="lang lang-en">Built interaction prototypes in Figma and Axure</span></li><li><span class="lang lang-zh">运营多平台内容矩阵，累计原创内容 110 篇</span><span class="lang lang-en">Produced 110 original posts across a multi-platform content matrix</span></li></ul></div></details>
-        <details class="experience-item reveal"><summary><span class="experience-no">05</span><time>2023.06—08</time><span class="experience-title"><small><span class="lang lang-zh">武汉市拜斯达装饰公司</span><span class="lang lang-en">BEST Decoration, Wuhan</span></small><strong><span class="lang lang-zh">产品运营助理</span><span class="lang lang-en">Product Operations Assistant</span></strong></span><span class="experience-brief"><span class="lang lang-zh">搭建全渠道用户反馈闭环</span><span class="lang lang-en">Built a cross-channel feedback loop</span></span><span class="experience-toggle" aria-hidden="true"></span></summary><div class="experience-panel experience-panel-compact"><ul><li><span class="lang lang-zh">汇集并分类咨询、投诉与转化阻塞</span><span class="lang lang-en">Consolidated inquiries, complaints, and conversion blockers</span></li><li><span class="lang lang-zh">建立跨渠道反馈的归类与流转方式</span><span class="lang lang-en">Structured cross-channel feedback classification and routing</span></li><li><span class="lang lang-zh">推动服务流程与响应机制优化</span><span class="lang lang-en">Supported improvements to service and response workflows</span></li></ul></div></details>
-      </div>
-    </section>
+    <section class="experience" id="experience" aria-labelledby="experience-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">03 · Experience</p>
+            <h2 id="experience-title"><span class="title-line">Not a list.</span><span class="title-line">A line of growth.</span></h2>
+          </div>
+          <p class="section-intro">My path moves across design, operations, research and AI products. The thread is consistent: understand a complex context, make it legible and help different people move the work forward.</p>
+        </div>
 
-    <section class="research-section" id="research" aria-labelledby="research-title">
-      <div class="section-shell">
-        <div class="section-top reveal"><div><div class="section-marker section-marker-light"><span>03</span><span>Published research</span></div><h2 id="research-title"><span class="lang lang-zh">让数据成为<br><em>可讨论的证据。</em></span><span class="lang lang-en">Turn data into<br>evidence we can use.</span></h2></div><p><span class="lang lang-zh">两篇已发表研究，连接空间公平、机器学习、物联网与真实决策。</span><span class="lang lang-en">Two published studies connecting spatial equity, machine learning, IoT, and real decisions.</span></p></div>
-        <div class="publication-grid">
-          <article class="publication-card reveal"><div class="publication-top"><span>Infrastructure Reports · 2025</span><span>01</span></div><h3>Urban Villages Left Behind?</h3><p class="publication-subtitle">A Spatial Equity Analysis of Public Transit in Shenzhen</p><p><span class="lang lang-zh">整合社区边界、公交与地铁数据，使用缓冲区、空间自相关与回归分析，对比城中村和正式居住区的交通可达性。</span><span class="lang lang-en">Combined neighborhood, bus, and metro data with buffers, spatial autocorrelation, and regression to compare transit access across settlement types.</span></p><div class="publication-tags"><span>Sole author</span><span>Spatial statistics</span><span>Transit equity</span></div><div class="publication-links"><a href="https://doi.org/10.63808/ir.v1i3.201" target="_blank" rel="noopener noreferrer">DOI ↗</a><a href="portfolio.html#page-24">Visual study ↗</a></div></article>
-          <article class="publication-card publication-card-blue reveal"><div class="publication-top"><span>Proc. SPIE 13792 · ITSSC 2025</span><span>02</span></div><h3>Optimization Techniques in Smart Logistics</h3><p class="publication-subtitle">Machine Learning and IoT Applications</p><p><span class="lang lang-zh">以 IoT、云数据、机器学习和实时分析构建智慧物流框架；线性回归用于需求预测，Q-Learning 用于路径优化，K-Means 用于库存聚类。</span><span class="lang lang-en">Developed a smart-logistics framework combining IoT, cloud data, machine learning, and real-time analytics, with regression, Q-Learning, and K-Means for key decisions.</span></p><div class="simulation-label"><span class="lang lang-zh">实验 / 模拟结果，不代表真实上线业务</span><span class="lang lang-en">Controlled simulation results—not live business outcomes</span></div><div class="simulation-grid"><div><strong>−18%</strong><span><span class="lang lang-zh">运输成本</span><span class="lang lang-en">transport cost</span></span></div><div><strong>−12%</strong><span><span class="lang lang-zh">配送时间</span><span class="lang lang-en">delivery time</span></span></div><div><strong>−15%</strong><span><span class="lang lang-zh">缺货</span><span class="lang lang-en">stockouts</span></span></div><div><strong>+22%</strong><span><span class="lang lang-zh">模拟满意度</span><span class="lang lang-en">simulated satisfaction</span></span></div></div><div class="publication-links"><a href="https://doi.org/10.1117/12.3090136" target="_blank" rel="noopener noreferrer">DOI ↗</a><a href="portfolio.html#page-31">Visual study ↗</a></div></article>
+        <div class="timeline">
+          <article class="timeline-row"><time>Jul — Aug 2026</time><h3>TCL Software Engineering Center<span>AI Product Manager Intern</span></h3><p>Led product discovery for generative AI and imaging, owning the TV-based AI Quick Edit concept through cross-functional review and experience validation.</p></article>
+          <article class="timeline-row"><time>Mar — Jun 2026</time><h3>iFLYTEK<span>AI Product Manager Intern</span></h3><p>Supported three education product lines across multi-role requirement analysis, PRDs, prototypes, release management and data review.</p></article>
+          <article class="timeline-row"><time>Jan — Mar 2026</time><h3>China Merchants Bank, Wuhan<span>Sales Operations Assistant</span></h3><p>Built clearer operating flows around campaigns, customer signals and business data, helping the team identify exceptions and follow-up actions.</p></article>
+          <article class="timeline-row"><time>Mar — Aug 2025</time><h3>Hubei Urban Construction Design Institute<span>Project Operations Assistant</span></h3><p>Contributed to a smart streetlight prototype and project coordination while creating 110 original pieces across the content portfolio.</p></article>
+          <article class="timeline-row"><time>Jun — Aug 2023</time><h3>Best Decoration, Wuhan<span>Product Operations Assistant</span></h3><p>Structured an omnichannel feedback loop, classified recurring issues and supported improvements to service flow and response quality.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="archive-section section-shell" aria-labelledby="archive-title">
-      <div class="section-top section-top-compact reveal"><div><div class="section-marker"><span>04</span><span>Spatial archive</span></div><h2 id="archive-title"><span class="lang lang-zh">空间，是我的<br><em>第一种产品语言。</em></span><span class="lang lang-en">Space was my first<br>product language.</span></h2></div><a class="text-link" href="portfolio.html"><span class="lang lang-zh">浏览完整 40 页图册</span><span class="lang lang-en">Browse the full 40-page archive</span> ↗</a></div>
-      <div class="archive-grid">
-        <a class="archive-card archive-card-large reveal" href="portfolio.html#page-03"><figure><img src="assets/pages/page-09.jpg" width="1853" height="1310" loading="lazy" alt="Scroll Urbanism 宣纸文化小镇效果图"><figcaption>01 / 03</figcaption></figure><div><span>2024.11—2025.01 · Team Lead</span><h3>Scroll Urbanism</h3><p><span class="lang lang-zh">以宣纸非遗与山水卷轴重构文化小镇的公共空间系统。</span><span class="lang lang-en">Reframing a cultural town through Xuan-paper heritage and scroll-like spatial sequences.</span></p></div></a>
-        <a class="archive-card reveal" href="portfolio.html#page-10"><figure><img src="assets/pages/page-10.jpg" width="1853" height="1310" loading="lazy" alt="Slowscape 乡村文化集群鸟瞰"><figcaption>02 / 03</figcaption></figure><div><span>2024.04—06 · Team Lead</span><h3>Slowscape</h3><p><span class="lang lang-zh">以“收获—制作—饮食—学习—分享”构建乡村文化循环。</span><span class="lang lang-en">A rural cultural loop of harvest, craft, eat, learn, and share.</span></p></div></a>
-        <a class="archive-card reveal" href="portfolio.html#page-18"><figure><img src="assets/pages/page-18.jpg" width="1853" height="1310" loading="lazy" alt="City Bond 沿江工业遗址场地"><figcaption>03 / 03</figcaption></figure><div><span>2024.05—07 · Individual</span><h3>City Bond</h3><p><span class="lang lang-zh">用绿廊、雨水花园与口袋公园重新连接工厂、城市与江岸。</span><span class="lang lang-en">Reconnecting factory, city, and river through green corridors and resilient landscapes.</span></p></div></a>
-      </div>
-    </section>
-
-    <section class="profile-section" aria-labelledby="profile-title">
-      <div class="section-shell profile-layout">
-        <div class="profile-heading reveal"><div class="section-marker"><span>05</span><span>Profile</span></div><h2 id="profile-title"><span class="lang lang-zh">保持好奇，<br><em>持续建造。</em></span><span class="lang lang-en">Stay curious.<br>Keep building.</span></h2><p><span class="lang lang-zh">我正在寻找 AI 产品、产品策略、用户研究与跨学科创新相关的机会。</span><span class="lang lang-en">I am interested in opportunities across AI product, product strategy, user research, and interdisciplinary innovation.</span></p></div>
-        <div class="profile-details reveal">
-          <div class="profile-group"><h3><span class="lang lang-zh">教育</span><span class="lang lang-en">Education</span></h3><article><time>2026.09—2027.07</time><strong><span class="lang lang-zh">香港大学 · 硕士新生</span><span class="lang lang-en">The University of Hong Kong · Incoming master's student</span></strong></article><article><time>2022.09—2026.06</time><strong><span class="lang lang-zh">安徽大学 · 环境设计本科</span><span class="lang lang-en">Anhui University · Environmental Design</span></strong><span>GPA 89.08 / 100 · Top 10%</span></article></div>
-          <div class="profile-group"><h3><span class="lang lang-zh">荣誉</span><span class="lang lang-en">Honors</span></h3><ul><li><span class="lang lang-zh">全国三维数字化创新设计大赛 · 国家级二等奖</span><span class="lang lang-en">National 3D Digital Innovation Design Competition · Second Prize</span></li><li><span class="lang lang-zh">两岸新锐设计竞赛华灿奖 · 省级二等奖</span><span class="lang lang-en">Huacan Award · Provincial Second Prize</span></li><li><span class="lang lang-zh">第十六届蓝桥杯大赛 · 省级二等奖</span><span class="lang lang-en">16th Lanqiao Cup · Provincial Second Prize</span></li><li><span class="lang lang-zh">安徽大学学习优秀一等奖 · 前 5%</span><span class="lang lang-en">First-Class Academic Excellence Scholarship · Top 5%</span></li></ul></div>
-          <div class="profile-group skills-group"><h3><span class="lang lang-zh">能力与工具</span><span class="lang lang-en">Skills & tools</span></h3><div><span>Product discovery</span><span>User research</span><span>Competitive analysis</span><span>PRD</span><span>Roadmap</span><span>Metrics</span><span>Figma</span><span>Axure</span><span>Python</span><span>SQL</span><span>Prompt design</span><span>API</span></div></div>
+    <section class="notes" id="notes" aria-labelledby="notes-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">04 · Notes</p>
+            <h2 id="notes-title"><span class="title-line">Notes still</span><span class="title-line">in progress.</span></h2>
+          </div>
+          <p class="section-intro">These are not finished conclusions. They are questions that keep returning in my projects — and keep changing how I work.</p>
+        </div>
+        <div class="note-grid">
+          <article class="note-card"><span class="note-no">FIELD NOTE 01</span><h3>Before “what can AI do?”, ask “why is it needed?”</h3><p>Capability matters. But the person, moment and context determine whether a capability can become a product.</p></article>
+          <article class="note-card"><span class="note-no">FIELD NOTE 02</span><h3>Spatial design was my first product language.</h3><p>Movement, scale, behaviour and feeling are all parts of an experience. They taught me to begin with real contexts, not abstract features.</p></article>
+          <article class="note-card"><span class="note-no">FIELD NOTE 03</span><h3>Making complexity clear is a form of creation.</h3><p>When research, technology, business and experience pull in different directions, a precise problem is often more valuable than a fast answer.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="contact-section" id="contact" aria-labelledby="contact-title">
-      <div class="section-shell contact-layout reveal">
-        <div><div class="section-marker section-marker-light"><span>06</span><span>Say hello</span></div><h2 id="contact-title"><span class="lang lang-zh">有一个复杂问题？<br><em>我们一起拆开它。</em></span><span class="lang lang-en">Have a complex problem?<br>Let's unpack it together.</span></h2></div>
-        <div class="contact-card"><p><span class="lang lang-zh">欢迎聊 AI 产品、研究、设计，或者任何正在从模糊走向清晰的想法。</span><span class="lang lang-en">Let's talk about AI products, research, design—or any idea moving from fuzzy to clear.</span></p><a href="mailto:1890233227@qq.com"><span>Email</span><strong>1890233227@qq.com ↗</strong></a><div><span><span class="lang lang-zh">微信</span><span class="lang lang-en">WeChat</span></span><strong>Wyilin0618</strong></div><a href="https://github.com/Yizero618" target="_blank" rel="noopener noreferrer"><span>GitHub</span><strong>@Yizero618 ↗</strong></a><a href="portfolio.html"><span>Archive</span><strong><span class="lang lang-zh">完整作品集</span><span class="lang lang-en">Full portfolio</span> ↗</strong></a></div>
+    <section class="life" id="life" aria-labelledby="life-title">
+      <div class="shell life-grid">
+        <div>
+          <p class="eyebrow">05 · Life</p>
+          <h2 class="life-quote" id="life-title"><span class="title-line">Beyond work,</span><span class="title-line">I keep practising</span><span class="title-line"><em>how to notice.</em></span></h2>
+        </div>
+        <div class="life-copy">
+          <p>Photography is how I slow down. A camera makes me notice light, distance and small gestures — and reminds me that the most interesting details rarely announce themselves. Over time, this space will hold more city walks, visual fragments and reading notes.</p>
+          <div class="life-list">
+            <div class="life-item"><span>Now</span><strong>Moving from Wuhan to Hong Kong for graduate study</strong></div>
+            <div class="life-item"><span>Exploring</span><strong>AI products, spatial experience, images and everyday life</strong></div>
+            <div class="life-item"><span>Keeping</span><strong>Curiosity, specificity and sensitivity to the real world</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="shell">
+        <div class="contact-line">
+          <h2 id="contact-title"><span class="title-line">Working through</span><span class="title-line">something unclear?</span></h2>
+          <div class="contact-copy">
+            <p>Let’s talk about AI products, user research, interdisciplinary work — or any idea moving from ambiguity towards something real.</p>
+            <div class="contact-links">
+              <a href="mailto:1890233227@qq.com">Email · 1890233227@qq.com ↗</a>
+              <a href="https://github.com/Yizero618" target="_blank" rel="noreferrer">GitHub · @Yizero618 ↗</a>
+              <span>WeChat · Wyilin0618</span>
+            </div>
+          </div>
+        </div>
+        <footer class="site-footer">
+          <span>© 2026 Elaine Wang</span>
+          <span>Observe · Define · Build · Validate</span>
+          <a href="#top">Back to top ↑</a>
+        </footer>
       </div>
     </section>
   </main>
-
-  <footer class="site-footer"><div class="section-shell"><span>© <span id="year">2026</span> Yilin Wang.</span><span><span class="lang lang-zh">观察 · 定义 · 建造 · 验证</span><span class="lang lang-en">Observe · Frame · Build · Validate</span></span><a href="#top"><span class="lang lang-zh">回到顶部</span><span class="lang lang-en">Back to top</span> ↑</a></div></footer>
 </body>
 </html>
