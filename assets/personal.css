@@ -95,6 +95,9 @@ button { cursor: pointer; }
 .mini-project h3 { margin: 0; font: 500 2rem/1.2 var(--serif); letter-spacing: -.03em; }
 .mini-project-body > p:not(.project-meta) { color: var(--muted); font-size: .9rem; }
 .project-link { display: inline-block; margin-top: 12px; padding-bottom: 3px; border-bottom: 1px solid var(--accent); color: var(--accent); font-size: .77rem; }
+.case-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.case-links a { padding: 8px 12px; border: 1px solid var(--line); border-radius: 20px; font-size: .72rem; }
+.case-links a:hover { background: var(--chai); }
 .experience { padding-top: 40px; }
 .timeline { border-top: 1px solid var(--line); }
 .timeline-row { display: grid; grid-template-columns: 130px 1fr 1.1fr; gap: 40px; padding: 28px 0; border-bottom: 1px solid var(--line); align-items: baseline; }

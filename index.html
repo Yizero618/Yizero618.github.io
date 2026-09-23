@@ -1,15 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f1eeeb">
-  <meta http-equiv="refresh" content="0; url=/English/">
-  <link rel="canonical" href="https://yizero618.github.io/English/">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <title>Elaine Wang — Personal Website</title>
-  <style>body{margin:0;min-height:100vh;display:grid;place-content:center;gap:16px;text-align:center;background:#f1eeeb;color:#302923;font:18px/1.7 Georgia,serif}a{color:#795548}</style>
-  <script>window.location.replace('/English/' + window.location.search + window.location.hash);</script>
+  <meta name="robots" content="noindex, follow">
+  <meta http-equiv="refresh" content="0; url=/CN/">
+  <link rel="canonical" href="https://yizero618.github.io/CN/">
+  <title>Yilin Wang</title>
+  <script>
+    const destination = location.hash.startsWith('#/') ? '/work/' : '/CN/';
+    location.replace(destination + location.search + location.hash);
+  </script>
 </head>
-<body><h1>Elaine Wang · 王亦琳</h1><nav><a href="/English/">English</a> · <a href="/CN/">中文简历</a></nav></body>
+<body>
+  <a href="/CN/">Chinese homepage</a>
+  <a href="/work/">Interactive portfolio</a>
+</body>
 </html>
