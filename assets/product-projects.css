@@ -18,6 +18,18 @@ html[lang="zh-CN"] .skill-group h3 { font-size: 1rem; font-weight: 650; }
 html[lang="zh-CN"] .education-item p,
 html[lang="zh-CN"] .skill-group p,
 html[lang="zh-CN"] .honor-list { font-size: .88rem; }
+html[lang="en"] .resume-tagline { font-size: clamp(1.32rem, 2vw, 1.75rem); font-weight: 600; }
+html[lang="en"] .resume-intro { font-size: 1rem; line-height: 1.95; }
+html[lang="en"] .resume-section h2,
+html[lang="en"] .resume-aside h2 { font-size: clamp(1.62rem, 2.5vw, 2rem); font-weight: 650; }
+html[lang="en"] .resume-entry h3 { font-size: 1.16rem; font-weight: 650; }
+html[lang="en"] .resume-entry p:not(.resume-role),
+html[lang="en"] .resume-entry li { font-size: .96rem; line-height: 1.9; }
+html[lang="en"] .education-item h3,
+html[lang="en"] .skill-group h3 { font-size: 1rem; font-weight: 650; }
+html[lang="en"] .education-item p,
+html[lang="en"] .skill-group p,
+html[lang="en"] .honor-list { font-size: .88rem; }
 .product-projects { padding: 88px 0 92px; background: #f8f5f1; border-block: 1px solid var(--line); scroll-margin-top: 86px; }
 .product-projects-head { display: flex; justify-content: space-between; align-items: end; gap: 48px; padding-bottom: 30px; border-bottom: 1px solid var(--ink); }
 .product-projects-head .eyebrow { margin-bottom: 14px; }
@@ -58,4 +70,4 @@ html[lang="zh-CN"] .honor-list { font-size: .88rem; }
 @media (max-width: 600px) { .product-projects-head { display: block; } .product-projects-head > p { margin-top: 18px; } .product-branches { grid-template-columns: 1fr; } .branch-visual { height: 230px; } .branch-copy { display: flex; } .branch-open { margin-top: 0; } }
 @media (max-width: 360px) { .branch-copy { display: block; } .branch-open { margin-top: 16px; } }
 @media (prefers-reduced-motion: reduce) { .product-branch,.branch-arrow,.branch-visual img,.tcl-note,.branch-open span,.product-projects-star { transition: none; } }
-@media print { .product-projects { display: none !important; } html[lang="zh-CN"] .resume-section h2,html[lang="zh-CN"] .resume-aside h2 { font-size: 14pt; } html[lang="zh-CN"] .resume-entry p:not(.resume-role),html[lang="zh-CN"] .resume-entry li { font-size: 9pt; } }
+@media print { .product-projects { display: none !important; } .resume-section h2,.resume-aside h2 { font-size: 14pt !important; } .resume-entry p:not(.resume-role),.resume-entry li { font-size: 9pt !important; } }

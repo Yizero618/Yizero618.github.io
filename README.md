@@ -10,7 +10,7 @@
 - `/CN/`：中文简历，支持打印 / 保存 PDF
 - `/portfolio.html`：原有 40 页完整作品集
 - `assets/personal.css`：两个页面共用样式；使用 Cinna、Froth、Creme、Latte、Chai 配色
-- `assets/product-projects.css`：中文简历产品分支与宋体字级样式
+- `assets/product-projects.css`：中文简历产品分支与中英文简历字级样式
 - `assets/personal.js`：移动导航与打印交互
 - `assets/pages/`、`assets/thumbs/`：原始作品集页面与缩略图
 
