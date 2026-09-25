@@ -60,7 +60,6 @@ swap('让技术围绕真实的生活场景。', 'Designing technology around rea
 swap('让长故事，<br>有一个更轻的入口。', 'Long stories,<br>made lighter.')
 swap('AI 快剪<br>助眠 · K 歌', 'AI Edit<br>Sleep · Sing')
 swap('探索案例', 'Explore case study')
-swap('轻点卡片进入项目　·　每个分支都可以独立阅读与体验', 'Open a card to read and explore each project in detail')
 swap('查看 TCL 产品项目详情', 'View details of the TCL product project')
 swap('查看科大讯飞产品项目详情', 'View details of the iFLYTEK product project')
 swap('查看项目', 'View project')
