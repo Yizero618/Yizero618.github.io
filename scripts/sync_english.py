@@ -122,7 +122,8 @@ swap('以宣纸文化与山水意象串联小镇更新、公共空间和生态�
 swap('以慢食理念组织乡村院落、集市与共享活动，延续地方文化活力。', 'Slow Food principles shape village courtyards, markets, and shared activities that sustain local culture.')
 swap('结合工业记忆与滨江生态策略，重连城市、社区和江岸。', 'Industrial memory and riverside ecology reconnect the city, community, and waterfront.')
 swap('比较深圳城中村与正式居住区的公交可达性，识别交通服务差距。', 'Compares transit access in Shenzhen’s urban villages and formal neighborhoods to identify service gaps.')
-swap('查看完整作品集 ↗', 'View the full portfolio ↗')
+swap('查看完整作品集', 'View the full portfolio')
+swap('四个项目 · 完整方案与过程', 'Four projects · Full concepts and process')
 swap('产品 · 研究 · 设计', 'Product · Research · Design')
 swap('返回顶部 ↑', 'Back to top ↑')
 
