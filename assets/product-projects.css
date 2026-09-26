@@ -74,8 +74,7 @@ html[lang="en"] .honor-list { font-size: .88rem; }
 #experience .entry-head h3 { color: var(--ink); font: 700 1.3rem/1.4 var(--serif); }
 #experience .resume-role { color: #806459; font: 600 1rem/1.5 var(--serif); }
 .experience-project-link,
-.resume-section .project-link { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 7px 14px; border: 1px solid; border-radius: 3px; font: 650 .78rem/1.4 var(--sans); white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
-.experience-project-link { min-height: 32px; padding: 4px 10px; font-size: .71rem; }
+.resume-section .project-link { min-height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 4px 10px; border: 1px solid; border-radius: 3px; font: 650 .71rem/1.4 var(--sans); white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
 .resume-section .project-link { margin-top: 14px; }
 .experience-project-link,.resume-section .project-link { color: var(--case-link-text); border-color: var(--case-link-border); background: var(--case-link-bg); }
 .experience-project-link:hover,.resume-section .project-link:hover { color: #fff; border-color: var(--case-link-hover); background: var(--case-link-hover); transform: translateY(-2px); }
