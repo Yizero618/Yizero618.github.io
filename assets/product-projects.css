@@ -1,5 +1,5 @@
 /* Chinese portfolio: type hierarchy and the two product branches. */
-:root { --case-link-text: #634916; --case-link-border: #ae8d47; --case-link-bg: #efe0b2; --case-link-hover: #80601e; }
+:root { --case-link-text: #5b3b30; --case-link-border: #987464; --case-link-bg: #eadbd2; --case-link-hover: #6b483b; }
 html[lang="zh-CN"] { --serif: "Songti SC", "Noto Serif CJK SC", STSong, SimSun, Georgia, serif; }
 html[lang="zh-CN"] body { font-family: var(--serif); font-size: 16px; line-height: 1.85; }
 html[lang="zh-CN"] .eyebrow,
