@@ -98,6 +98,7 @@ swap('TCL 软件工程中心 · 产品规划部', 'TCL Software Engineering Cent
 swap('AI 产品经理实习生', 'AI Product Manager Intern')
 swap('围绕电视、手机与家庭多终端生态开展生成式 AI 与影像产品洞察，结合用户场景、设备特点与技术成熟度判断产品机会。', 'Researched generative AI and imaging opportunities across TVs, mobile devices, and the connected-home ecosystem, assessing product opportunities through user scenarios, device strengths, and technical maturity.')
 swap('担任电视端 AI 快剪专题负责人，协调预研、算法、客户端、嵌入式、设计与业务团队，推进方案评审、优先级判断与体验验证。', 'Owned the TV-based AI Quick Edit topic, coordinating early research, algorithm, client, embedded, design, and business teams to advance concept review, prioritization, and experience validation.')
+swap('科大讯飞股份有限公司', 'iFLYTEK Co., Ltd.')
 swap('科大讯飞', 'iFLYTEK')
 swap('面向批阅机、数智作业和智学网，承接教师、学生、运营与客服需求，负责需求分析、PRD、原型、业务规则和验收标准。', 'Worked across the grading device, digital homework, and Zhixuewang products, translating needs from teachers, students, operations, and customer support into requirements, PRDs, prototypes, business rules, and acceptance criteria.')
 swap('维护需求池与版本清单，结合使用数据和一线反馈定位核心链路问题，推动需求从澄清、定义到交付与复盘。', 'Maintained the requirements backlog and release scope, using usage data and frontline feedback to identify friction in core journeys and move requirements from clarification and definition through delivery and review.')
