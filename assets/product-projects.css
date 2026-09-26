@@ -1,4 +1,5 @@
 /* Chinese portfolio: type hierarchy and the two product branches. */
+:root { --case-link-text: #634916; --case-link-border: #ae8d47; --case-link-bg: #efe0b2; --case-link-hover: #80601e; }
 html[lang="zh-CN"] { --serif: "Songti SC", "Noto Serif CJK SC", STSong, SimSun, Georgia, serif; }
 html[lang="zh-CN"] body { font-family: var(--serif); font-size: 16px; line-height: 1.85; }
 html[lang="zh-CN"] .eyebrow,
@@ -63,9 +64,9 @@ html[lang="en"] .honor-list { font-size: .88rem; }
 .branch-kicker { color: var(--accent); font: 600 .66rem/1.45 var(--sans); letter-spacing: .02em; }
 .branch-copy h3 { margin: 7px 0 4px; font: 650 1.5rem/1.3 var(--serif); }
 .branch-copy p { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
-.branch-open { flex: none; min-height: 32px; display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 4px 10px; border: 1px solid #987464; border-radius: 3px; background: #eadbd2; color: #5b3b30; font: 650 .71rem/1.4 var(--sans); white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.branch-open { flex: none; min-height: 32px; display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 4px 10px; border: 1px solid var(--case-link-border); border-radius: 3px; background: var(--case-link-bg); color: var(--case-link-text); font: 650 .71rem/1.4 var(--sans); white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease; }
 .branch-open span { display: inline-block; transition: transform .3s ease; }
-.product-branch:is(:hover,:focus-visible) .branch-open { color: #fff; border-color: #6b483b; background: #6b483b; }
+.product-branch:is(:hover,:focus-visible) .branch-open { color: #fff; border-color: var(--case-link-hover); background: var(--case-link-hover); }
 .product-branch:hover .branch-open span { transform: translateX(4px); }
 .resume-role-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 6px 0 14px; }
 .resume-entry-tcl .resume-role-row { margin-top: 12px; }
@@ -74,10 +75,10 @@ html[lang="en"] .honor-list { font-size: .88rem; }
 #experience .resume-role { color: #806459; font: 600 1rem/1.5 var(--serif); }
 .experience-project-link,
 .resume-section .project-link { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 7px 14px; border: 1px solid; border-radius: 3px; font: 650 .78rem/1.4 var(--sans); white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
-.experience-project-link { min-height: 32px; padding: 4px 10px; color: #5b3b30; border-color: #987464; background: #eadbd2; font-size: .71rem; }
-.resume-section .project-link { margin-top: 14px; color: #634916; border-color: #ae8d47; background: #efe0b2; }
-.experience-project-link:hover { color: #fff; border-color: #6b483b; background: #6b483b; transform: translateY(-2px); }
-.resume-section .project-link:hover { color: #fff; border-color: #80601e; background: #80601e; transform: translateY(-2px); }
+.experience-project-link { min-height: 32px; padding: 4px 10px; font-size: .71rem; }
+.resume-section .project-link { margin-top: 14px; }
+.experience-project-link,.resume-section .project-link { color: var(--case-link-text); border-color: var(--case-link-border); background: var(--case-link-bg); }
+.experience-project-link:hover,.resume-section .project-link:hover { color: #fff; border-color: var(--case-link-hover); background: var(--case-link-hover); transform: translateY(-2px); }
 .experience-project-link:focus-visible,
 .resume-section .project-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 @media (max-width: 1100px) { .product-projects-head > p { max-width: 380px; } .branch-copy { padding-left: 16px; } }
