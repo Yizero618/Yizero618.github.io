@@ -1,4 +1,4 @@
-/* Chinese portfolio: type hierarchy and the two product branches. */
+/* Bilingual portfolio: type hierarchy, product branches and playable games. */
 :root { --case-link-text: #5b3b30; --case-link-border: #987464; --case-link-bg: #eadbd2; --case-link-hover: #6b483b; }
 html[lang="zh-CN"] { --serif: "Songti SC", "Noto Serif CJK SC", STSong, SimSun, Georgia, serif; }
 html[lang="zh-CN"] body { font-family: var(--serif); font-size: 16px; line-height: 1.85; }
@@ -80,6 +80,46 @@ html[lang="en"] .honor-list { font-size: .88rem; }
 .experience-project-link:hover,.resume-section .project-link:hover { color: #fff; border-color: var(--case-link-hover); background: var(--case-link-hover); transform: translateY(-2px); }
 .experience-project-link:focus-visible,
 .resume-section .project-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* Independent games keep the same paper, serif and brown-link vocabulary. */
+.game-products { padding: 42px 0 46px; background: #eee7df; border-bottom: 1px solid var(--line); scroll-margin-top: 86px; }
+.game-products .shell { display: grid; gap: 24px; }
+.game-products-head { display: flex; align-items: end; justify-content: space-between; gap: 32px; }
+.game-products-head .eyebrow { margin-bottom: 10px; font: 600 .75rem/1.5 var(--sans); letter-spacing: .17em; }
+.game-products-head h2 { margin: 0; font: 650 clamp(1.62rem, 2.5vw, 2rem)/1.4 var(--serif); letter-spacing: .06em; }
+.game-products-star { display: inline-block; margin-left: 8px; color: var(--accent); font: 400 .48em/1 var(--sans); vertical-align: top; }
+.game-products-intro { max-width: 480px; }
+.game-products-intro > p { margin: 0 0 8px; color: var(--muted); font-size: .88rem; line-height: 1.7; }
+.game-availability { display: inline-flex; align-items: center; gap: 7px; color: var(--case-link-text); font: 600 .69rem/1.5 var(--sans); }
+.game-availability::before { content: ""; width: 5px; height: 5px; flex: none; border-radius: 50%; background: var(--accent); }
+.game-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.game-card { min-width: 0; background: #f8f4ee; border: 1px solid var(--line); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.game-card:is(:hover, :focus-within) { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 18px 32px -24px rgba(48, 41, 35, .45); }
+.game-card-link { display: flex; flex-direction: column; height: 100%; padding: 16px; }
+.game-card-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.game-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; color: var(--accent); font: 600 .62rem/1.5 var(--sans); letter-spacing: .06em; }
+.game-genre { color: var(--muted); letter-spacing: 0; text-align: right; }
+.game-visual { aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid rgba(48, 41, 35, .1); background: var(--chai); }
+.game-visual img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .5s ease; }
+.game-visual img[src$="tiny-room-cover.jpg"] { object-position: center 24%; }
+.game-visual img[src$="borrow-a-beam-cover.jpg"] { object-position: center 35%; }
+.game-card:is(:hover, :focus-within) .game-visual img { transform: scale(1.035); }
+.game-copy { display: flex; flex: 1; flex-direction: column; min-width: 0; padding: 19px 2px 1px; }
+.game-kicker { margin: 0 0 7px; color: var(--accent); font: 500 .68rem/1.5 var(--sans); }
+.game-copy h3 { margin: 0; color: var(--ink); font: 650 clamp(1.25rem, 1.7vw, 1.5rem)/1.4 var(--serif); }
+.game-summary { margin: 12px 0 20px; color: var(--muted); font-size: .86rem; line-height: 1.8; }
+.game-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 15px; border-top: 1px solid var(--line); }
+.game-play { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 42px; padding: 9px 14px; background: var(--case-link-hover); border: 1px solid var(--case-link-hover); border-radius: 3px; color: #fffaf5; font: 600 .76rem/1.5 var(--sans); white-space: nowrap; transition: background .2s ease, border-color .2s ease; }
+.game-play > span { font-size: 1rem; line-height: 1; transition: transform .25s ease; }
+.game-card:is(:hover, :focus-within) .game-play { background: var(--ink); border-color: var(--ink); }
+.game-card:is(:hover, :focus-within) .game-play > span { transform: translate(2px, -2px); }
+.game-platform { color: var(--muted); font: .65rem/1.5 var(--sans); text-align: right; }
+@media (max-width: 1050px) { .game-grid { gap: 14px; } .game-card-link { padding: 14px; } .game-products-intro { max-width: 400px; } .game-card-top { font-size: .58rem; gap: 8px; } }
+@media (max-width: 800px) { .game-grid { grid-template-columns: 1fr; } .game-card-link { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 0 22px; padding: 18px; } .game-card-top { grid-column: 1 / -1; font-size: .65rem; } .game-visual { align-self: center; } .game-copy { padding: 0; } .game-copy h3 { font-size: 1.45rem; } .game-summary { margin: 9px 0 16px; } .game-products-head { align-items: start; flex-direction: column; gap: 12px; } .game-products-intro { max-width: 580px; } }
+@media (max-width: 540px) { .game-products { padding: 32px 0 36px; } .game-products .shell { gap: 20px; } .game-grid { gap: 18px; } .game-card-link { display: flex; padding: 15px; } .game-copy { padding: 18px 2px 1px; } .game-card-bottom { padding-top: 14px; } .game-summary { margin: 10px 0 18px; } }
+@media (prefers-reduced-motion: reduce) { .game-card, .game-visual img, .game-play, .game-play > span { transition: none; } .game-card:is(:hover, :focus-within), .game-card:is(:hover, :focus-within) .game-visual img, .game-card:is(:hover, :focus-within) .game-play > span { transform: none; } }
+@media print { .game-products { display: none !important; } }
+
 @media (max-width: 1100px) { .product-projects-head > p { max-width: 380px; } .branch-copy { padding-left: 16px; } }
 @media (max-width: 900px) { .product-branches { grid-template-columns: 1fr; } .product-projects-head > p { max-width: 340px; } }
 @media (max-width: 600px) { .product-projects { padding: 32px 0 36px; } .product-projects .shell { gap: 18px; } .product-projects-head { align-items: start; flex-direction: column; gap: 10px; } .product-projects-head > p { max-width: none; } .product-branch { padding: 14px; } .branch-visual { height: 142px; } .branch-copy { padding-left: 14px; } .branch-copy h3 { font-size: 1.4rem; } .branch-copy p { display: none; } }
