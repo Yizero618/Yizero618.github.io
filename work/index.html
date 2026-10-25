@@ -72,22 +72,20 @@ body{font-family:var(--serif);font-size:16px}
 .clip-iteration{border:1px solid var(--line);border-radius:18px;padding:30px;margin:28px 0}.clip-iteration>h3{font-family:var(--serif);font-size:26px;line-height:1.6;margin:12px 0 20px}.clip-scene-counts{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:19px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.clip-scene-counts strong{display:block;font-family:var(--serif);font-size:39px;font-weight:400;line-height:1.3}.clip-scene-counts span{font-size:11px;color:var(--muted)}.clip-iteration-steps{display:grid;gap:16px;margin:25px 0}.clip-iteration-steps>div{display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px}.clip-iteration-steps span{font-size:11px;color:var(--muted);padding-top:3px}.clip-iteration-steps p{font-size:13px;line-height:1.9}.clip-iteration>.note{font-size:11px}
 @media(max-width:760px){.clip-responsibilities,.clip-interaction-notes{grid-template-columns:1fr;gap:12px}.clip-responsibilities>div{padding:18px}.clip-interaction-notes{gap:20px}.clip-responsibilities h3,.clip-interaction-notes h3{font-size:15px}.clip-responsibilities p,.clip-interaction-notes p{font-size:12px}.clip-demo-frame{height:1030px}.clip-prototype{margin-left:-8px;margin-right:-8px}.clip-prototype .prototype-head{font-size:11px;padding:12px}.clip-prototype .proto-caption{font-size:10px;padding:13px}.clip-collaboration>div{grid-template-columns:1fr;gap:8px;padding:18px 0}.clip-collaboration p{font-size:12px}.clip-pilot,.clip-iteration{padding:21px 18px}.clip-pilot-head{align-items:flex-start}.clip-pilot-head h3,.clip-iteration>h3{font-size:23px}.clip-pilot-head .tag{font-size:9px}.clip-pilot-head .eyebrow{font-size:9px;letter-spacing:.1em}.clip-rates{gap:10px}.clip-rates strong,.clip-rates #clip-completion-value{font-size:34px}.clip-rates strong>span{font-size:17px}.clip-rates h4{font-size:11px}.clip-rates p{font-size:10px;line-height:1.8}.clip-rate-control button{min-height:38px}.clip-iteration-steps p{font-size:12px}.clip-pilot>.note,.clip-iteration>.note{font-size:11px}.clip-scene-counts span{font-size:11px}}
 
-/* Clip typography: one Chinese font family, a clear reading scale, and selective emphasis. */
+/* Clip typography: inherit the homepage font system; refine scale and emphasis only. */
 .clip-case{
-  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",Arial,sans-serif;
   --muted:#665b54;
   --clip-body:15px;
-  font-family:var(--sans);font-size:var(--clip-body);font-weight:400;line-height:1.85;
+  font-size:var(--clip-body);font-weight:400;line-height:1.85;
 }
-.clip-case button,.clip-case input{font-family:var(--sans)}
 .clip-case strong{font-weight:600}
 .clip-case .case-hero h1,.clip-case .case-section h2,
 .clip-case .scenario-quote h3,.clip-case .pillar .label,
 .clip-case .outcome-box h3,.clip-case .clip-pilot-head h3,
-.clip-case .clip-iteration>h3{font-family:var(--sans);font-weight:600;letter-spacing:0}
-.clip-case .case-hero h1{font-size:52px;line-height:1.3;font-weight:650;letter-spacing:-.02em}
-.clip-case .case-hero .case-index{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.04em;margin-bottom:16px}
-.clip-case .case-hero .case-subtitle{font-family:var(--sans);font-size:20px;font-weight:500;line-height:1.65;margin-top:16px}
+.clip-case .clip-iteration>h3{font-weight:600}
+.clip-case .case-hero h1{font-size:52px;line-height:1.3;font-weight:650}
+.clip-case .case-hero .case-index{font-size:13px;font-weight:500;letter-spacing:.04em;margin-bottom:16px}
+.clip-case .case-hero .case-subtitle{font-size:20px;font-weight:500;line-height:1.65;margin-top:16px}
 .clip-case .case-hero .intro{font-size:var(--clip-body);line-height:1.9}
 .clip-case .breadcrumb{font-size:12px}
 .clip-case .case-meta dt{font-size:12px;font-weight:500;letter-spacing:.04em}
@@ -113,16 +111,16 @@ body{font-family:var(--serif);font-size:16px}
 .clip-case .detail-block .mini-label{font-size:12px;font-weight:500;letter-spacing:.04em}
 .clip-case .clip-responsibilities h3,.clip-case .clip-interaction-notes h3,
 .clip-case .clip-collaboration h3,.clip-case .pattern-card h3{font-size:17px;line-height:1.6;font-weight:600}
-.clip-case .clip-subheading{font-family:var(--sans);font-weight:600;line-height:1.65;letter-spacing:0}
+.clip-case .clip-subheading{font-weight:600;line-height:1.65;letter-spacing:0}
 .clip-case .stat .stat-number,.clip-case .clip-rates strong,
-.clip-case .clip-scene-counts strong,.clip-case .clip-funnel strong{font-family:var(--sans);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.clip-case .clip-scene-counts strong,.clip-case .clip-funnel strong{font-weight:600;font-variant-numeric:tabular-nums}
 .clip-case .stat .stat-number{font-size:36px;line-height:1.3}
 .clip-case .stat .stat-number small{font-size:12px;font-weight:500;letter-spacing:0;line-height:1.65}
 .clip-case .stat p{font-size:12px;line-height:1.8}
 .clip-case .segmented button{font-size:13px;font-weight:500;line-height:1.6}
 .clip-case .segmented button.active{font-weight:600}
 .clip-case .scenario-quote h3{font-size:25px;line-height:1.5}
-.clip-case .callout p{font-family:var(--sans);font-size:18px;font-weight:500;line-height:1.85}
+.clip-case .callout p{font-size:18px;font-weight:500;line-height:1.85}
 .clip-case .pattern-card p,.clip-case .pattern-card .verdict,
 .clip-case .flow-step p,.clip-case .decision-row,.clip-case .decision-row p{font-size:14px;line-height:1.9}
 .clip-case .flow-step h3{font-size:16px;font-weight:600;line-height:1.6}
