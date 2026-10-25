@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="TCL AI 快剪项目的交互复盘原型：播放器入口、首次说明、快剪播放、切回原片与播完衔接。画面与片长为演示。">
+<title>AI 快剪 · 交互复盘原型</title>
+<script>if (new URLSearchParams(window.location.search).get('embed') === '1') document.documentElement.classList.add('is-embedded');</script>
+<style>
+#tcl-quickcut-concept {
+  --tv-bg: #101216;
+  --tv-panel: #202329;
+  --tv-muted: #bcc0c8;
+  --tv-text: #f8f8fb;
+  --tv-accent: #ff4053;
+  --preview-text: light-dark(#292b32, #eeeef2);
+  --preview-muted: light-dark(#666b75, #a6a9b2);
+  --preview-active: light-dark(#202329, #f0f1f4);
+  --preview-active-text: light-dark(#ffffff, #15171c);
+  width: 100%;
+  color: var(--preview-text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#tcl-quickcut-concept * { box-sizing: border-box; }
+#tcl-quickcut-concept [hidden] { display: none !important; }
+#tcl-quickcut-concept button, #tcl-quickcut-concept input { font: inherit; }
+#tcl-quickcut-concept button { -webkit-tap-highlight-color: transparent; }
+#tcl-quickcut-concept .preview-heading {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding-bottom: 12px; font-size: 15px; font-weight: 500;
+}
+#tcl-quickcut-concept .concept-label { font-size: 12px; color: var(--preview-muted); font-weight: 400; }
+#tcl-quickcut-concept .preview-routes { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+#tcl-quickcut-concept .preview-routes button {
+  border: 0; background: transparent; color: var(--preview-muted);
+  padding: 8px 13px; border-radius: 7px; min-height: 38px;
+}
+#tcl-quickcut-concept .preview-routes button[aria-pressed="true"] { background: var(--preview-active); color: var(--preview-active-text); }
+#tcl-quickcut-concept .tv-screen {
+  color-scheme: dark;
+  position: relative; isolation: isolate; width: 100%; aspect-ratio: 16 / 9; min-height: 440px;
+  border-radius: 12px; overflow: hidden; background: var(--tv-bg); color: var(--tv-text);
+}
+#tcl-quickcut-concept .film-scene { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(110deg, #323737 1%, #4b4c46 38%, #a79270 62%, #222726 97%); }
+#tcl-quickcut-concept .window-light {
+  position: absolute; left: 34%; top: 0; width: 55%; height: 78%;
+  background: linear-gradient(165deg, #c6bfa6 3%, #ead2a4 38%, #8a9b9e 100%);
+  box-shadow: -70px 0 120px #b4a88b33;
+}
+#tcl-quickcut-concept .window-frame {
+  position: absolute; inset: 0 9% 20% 34%; z-index: 2;
+  background: linear-gradient(90deg, transparent 46%, #272d2c 46%, #272d2c 48%, transparent 48%),
+              linear-gradient(0deg, transparent 38%, #323532 38%, #323532 40%, transparent 40%);
+  border-left: 12px solid #3e413a; border-right: 12px solid #393c36;
+}
+#tcl-quickcut-concept .city { position: absolute; top: 42%; background: #788783; opacity: .8; }
+#tcl-quickcut-concept .city-one { left: 40%; width: 12%; height: 35%; background: repeating-linear-gradient(90deg, #748581 0 13px, #a3a99b 13px 16px); }
+#tcl-quickcut-concept .city-two { left: 56%; top: 29%; width: 16%; height: 47%; background: repeating-linear-gradient(0deg, #8d9790 0 18px, #b4b3a0 18px 20px); }
+#tcl-quickcut-concept .city-three { left: 75%; top: 48%; width: 12%; height: 30%; background: #7a8a88; }
+#tcl-quickcut-concept .curtain { position: absolute; left: 22%; top: 0; width: 15%; height: 85%; background: repeating-linear-gradient(90deg, #4d5148 0%, #66685a 18%, #3e463f 34%); transform: skewX(-4deg); z-index: 3; }
+#tcl-quickcut-concept .lamp { position: absolute; top: 24%; left: 13%; height: 44%; width: 3px; background: #a59574; }
+#tcl-quickcut-concept .lamp span { position: absolute; width: 90px; height: 65px; left: -44px; top: -28px; background: linear-gradient(90deg, #bd9860, #dbc38d, #9b7c4d); clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+#tcl-quickcut-concept .sofa { position: absolute; bottom: -10%; left: -7%; width: 68%; height: 43%; border-radius: 70px 80px 0 0; background: linear-gradient(160deg, #5e6558, #2b332c); box-shadow: 0 -14px 35px #0c15123d; z-index: 4; transform: rotate(-3deg); }
+#tcl-quickcut-concept .person { position: absolute; z-index: 5; }
+#tcl-quickcut-concept .person-one { left: 62%; bottom: 14%; height: 45%; width: 10%; background: linear-gradient(90deg, #37342e, #504a3d, #342f2a); border-radius: 45% 45% 12% 12%; transform: rotate(-4deg); }
+#tcl-quickcut-concept .person-one span { position: absolute; left: 24%; top: -29%; width: 59%; height: 35%; border-radius: 44% 47% 39% 35%; background: linear-gradient(100deg, #292824 30%, #44372d 54%, #967d5d 100%); box-shadow: -6px -5px 0 #2b2b26; }
+#tcl-quickcut-concept .person-two { left: 76%; bottom: 8%; height: 44%; width: 11%; background: linear-gradient(110deg, #7e7159, #b7a186, #5b564a); border-radius: 44% 48% 5% 5%; transform: rotate(4deg); }
+#tcl-quickcut-concept .person-two span { position: absolute; left: 19%; top: -30%; width: 64%; height: 36%; border-radius: 44% 41% 30% 25%; background: linear-gradient(90deg, #a89173 10%, #3c332a 48%); box-shadow: 7px 3px 0 #34312a; }
+#tcl-quickcut-concept .film-grain { position: absolute; inset: 0; z-index: 8; background: linear-gradient(110deg, #203a3c36, transparent 65%, #171a1a70); }
+#tcl-quickcut-concept .picture-shade { position: absolute; inset: 0; z-index: 9; background: linear-gradient(180deg, #0c1012b5 0%, #11141718 27%, #0c10123a 48%, #0a0c10ee 75%, #0a0c10 100%); }
+#tcl-quickcut-concept .tv-header {
+  position: absolute; z-index: 11; top: 0; left: 0; width: 100%;
+  display: flex; justify-content: space-between; align-items: center; padding: 24px 30px; gap: 18px;
+}
+#tcl-quickcut-concept .brand-group { display: flex; gap: 18px; align-items: center; min-width: 0; }
+#tcl-quickcut-concept .back-button { color: #d9dcdf; background: transparent; border: 0; display: flex; gap: 4px; align-items: center; padding: 8px 0; }
+#tcl-quickcut-concept .back-button svg, #tcl-quickcut-concept .back-button i { width: 18px; height: 18px; }
+#tcl-quickcut-concept .tcl-wordmark { color: #ff4252; font-size: 24px; letter-spacing: -1px; font-weight: 750; }
+#tcl-quickcut-concept .header-program { color: #efefef; display: flex; align-items: center; gap: 12px; font-size: 14px; }
+#tcl-quickcut-concept .episode-short { color: #c2c4c5; font-size: 12px; }
+#tcl-quickcut-concept .mode-label { flex-shrink: 0; display: inline-flex; align-items: center; padding: 5px 11px; border: 1px solid #f2f3f549; border-radius: 5px; color: #f0f0f1; font-size: 12px; background: #16191eab; }
+#tcl-quickcut-concept .mode-label.is-quick { color: #ffe7e9; border-color: #ff879568; background: #5d2026b8; }
+#tcl-quickcut-concept .scene-caption { position: absolute; z-index: 10; left: 15px; right: 15px; top: 42%; text-align: center; color: #f5f2eb; font-size: 18px; letter-spacing: 1px; text-shadow: 0 2px 5px #000b; }
+#tcl-quickcut-concept .playback-controls { position: absolute; z-index: 12; bottom: 0; left: 0; right: 0; padding: 0 34px 20px; }
+#tcl-quickcut-concept .control-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 16px; }
+#tcl-quickcut-concept .program-meta { font-size: 12px; color: #c2c5ca; }
+#tcl-quickcut-concept h2 { font-size: 27px; font-weight: 500; letter-spacing: 2px; margin: 3px 0 0; color: #fff; line-height: 1.35; }
+#tcl-quickcut-concept .mode-description { font-size: 12px; color: #bfc3ca; padding-bottom: 5px; }
+#tcl-quickcut-concept .timeline input {
+  appearance: none; width: 100%; display: block; height: 20px; margin: 0; background: transparent;
+}
+#tcl-quickcut-concept .timeline input::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(to right, #ff4252 var(--played, 23.63%), #ffffff36 var(--played, 23.63%)); }
+#tcl-quickcut-concept .timeline input::-moz-range-track { height: 4px; border-radius: 4px; background: #ffffff36; }
+#tcl-quickcut-concept .timeline input::-moz-range-progress { background: #ff4252; height: 4px; }
+#tcl-quickcut-concept .timeline input::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; margin-top: -4px; border-radius: 50%; border: 0; background: #fff; box-shadow: 0 0 0 3px #ffffff16; }
+#tcl-quickcut-concept .timeline input::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; border: 0; background: #fff; }
+#tcl-quickcut-concept .time-labels { display: flex; justify-content: space-between; font-size: 12px; color: #c8cbd0; font-variant-numeric: tabular-nums; margin: 2px 0 16px; }
+#tcl-quickcut-concept .action-row { display: flex; gap: 12px; align-items: stretch; }
+#tcl-quickcut-concept .tv-button {
+  display: flex; justify-content: center; align-items: center; gap: 9px;
+  border: 1px solid #ffffff19; background: #25282e; color: #f7f7f9;
+  border-radius: 8px; min-height: 58px; padding: 10px 18px; text-align: center;
+}
+#tcl-quickcut-concept .tv-button svg, #tcl-quickcut-concept .tv-button i { width: 19px; height: 19px; flex-shrink: 0; }
+#tcl-quickcut-concept .tv-button strong { display: block; font-size: 16px; font-weight: 500; line-height: 1.35; }
+#tcl-quickcut-concept .tv-button small { display: block; font-size: 11px; margin-top: 3px; color: #c6c7cd; }
+#tcl-quickcut-concept .feature-button { min-width: 220px; text-align: left; background: #392228; border-color: #76505a; }
+#tcl-quickcut-concept .tv-button.tv-focused { background: #f7f7fa; color: #16181d; border-color: #fff; box-shadow: 0 0 0 3px #f4f5ff30; }
+#tcl-quickcut-concept .tv-button.tv-focused small { color: #565961; }
+#tcl-quickcut-concept .tv-button.primary { background: #f8f8fb; color: #16181c; border-color: #fff; }
+#tcl-quickcut-concept .tv-button.primary.tv-focused { box-shadow: 0 0 0 3px #ff6475; }
+#tcl-quickcut-concept .tv-button.quiet { background: #202329; color: #c7cbd1; }
+#tcl-quickcut-concept .tv-button:disabled { opacity: .5; }
+#tcl-quickcut-concept .compact { min-width: 90px; }
+#tcl-quickcut-concept .remote-hint { display: flex; justify-content: space-between; gap: 10px; color: #9096a0; font-size: 11px; margin-top: 16px; }
+#tcl-quickcut-concept .show-controls { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 12; color: #eeeff3; background: #1c2027; border: 1px solid #ffffff39; border-radius: 8px; padding: 11px 20px; min-height: 44px; white-space: nowrap; }
+#tcl-quickcut-concept .toast-message { position: absolute; z-index: 16; top: 99px; left: 50%; transform: translateX(-50%); width: max-content; max-width: 86%; padding: 12px 18px; border-radius: 8px; background: #202329; color: #f3f4f7; box-shadow: 0 4px 22px #0005; font-size: 13px; text-align: center; }
+#tcl-quickcut-concept .overlay-host { position: absolute; inset: 0; z-index: 20; background: #080b10b8; display: flex; align-items: center; justify-content: center; padding: 24px; }
+#tcl-quickcut-concept .tv-dialog { width: min(590px, 100%); background: #202329; border: 1px solid #4c4f56; border-radius: 15px; padding: 28px 32px; box-shadow: 0 16px 65px #0006; }
+#tcl-quickcut-concept .dialog-eyebrow { color: #ff8995; font-size: 12px; letter-spacing: 2px; margin-bottom: 12px; }
+#tcl-quickcut-concept .tv-dialog h3 { margin: 0 0 12px; color: #fff; font-size: 25px; font-weight: 500; line-height: 1.4; }
+#tcl-quickcut-concept .dialog-copy { color: #bcc2cb; margin: 0; font-size: 14px; line-height: 1.8; }
+#tcl-quickcut-concept .duration-comparison { display: flex; gap: 28px; align-items: center; margin: 21px 0; padding: 17px 22px; border-radius: 8px; background: #15181e; }
+#tcl-quickcut-concept .duration-comparison .duration-number { font-size: 33px; font-weight: 500; font-variant-numeric: tabular-nums; }
+#tcl-quickcut-concept .duration-comparison .duration-unit { color: #aeb4bd; font-size: 12px; margin-left: 5px; }
+#tcl-quickcut-concept .duration-comparison .duration-label { font-size: 11px; color: #afb5bf; margin-bottom: 3px; }
+#tcl-quickcut-concept .duration-comparison .arrow { color: #707984; font-size: 22px; }
+#tcl-quickcut-concept .duration-comparison .short-duration .duration-number { color: #ff8995; }
+#tcl-quickcut-concept .resume-note { color: #e4e7ed; font-size: 12px; margin: 0 0 18px; }
+#tcl-quickcut-concept .dialog-actions { display: flex; gap: 12px; margin-top: 22px; }
+#tcl-quickcut-concept .dialog-actions .tv-button { flex: 1; min-height: 49px; padding: 11px 15px; }
+#tcl-quickcut-concept .next-episode { background: #15181e; border-radius: 8px; padding: 18px 20px; margin: 20px 0; }
+#tcl-quickcut-concept .next-episode .next-label { color: #b5bbc5; font-size: 12px; }
+#tcl-quickcut-concept .next-episode strong { display: block; margin: 5px 0; font-size: 19px; font-weight: 500; color: #f5f6f8; }
+#tcl-quickcut-concept .next-episode small { color: #c5cad3; font-size: 12px; }
+#tcl-quickcut-concept .end-secondary { display: flex; justify-content: center; margin-top: 17px; }
+#tcl-quickcut-concept .end-secondary button { color: #d1d5dc; background: transparent; border: 0; padding: 7px 12px; min-height: 38px; }
+#tcl-quickcut-concept .episode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+#tcl-quickcut-concept .episode-grid button { flex-direction: column; gap: 6px; min-width: 0; padding: 15px 8px; }
+#tcl-quickcut-concept .episode-grid small { font-size: 11px; }
+#tcl-quickcut-concept .preview-caption { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--preview-muted); margin-top: 10px; }
+@media (min-width: 900px) {
+  #tcl-quickcut-concept .tv-header { padding: 30px 40px; }
+  #tcl-quickcut-concept .playback-controls { padding: 0 44px 26px; }
+  #tcl-quickcut-concept .control-title { margin-bottom: 21px; }
+  #tcl-quickcut-concept h2 { font-size: 32px; }
+  #tcl-quickcut-concept .scene-caption { font-size: 22px; top: 43%; }
+  #tcl-quickcut-concept .tv-button { min-height: 64px; }
+  #tcl-quickcut-concept .feature-button { min-width: 260px; }
+  #tcl-quickcut-concept .tv-dialog { padding: 32px 38px; }
+  #tcl-quickcut-concept .tv-dialog h3 { font-size: 28px; }
+}
+@media (max-width: 620px) {
+  #tcl-quickcut-concept .preview-heading { flex-wrap: wrap; gap: 4px; }
+  #tcl-quickcut-concept .preview-routes { gap: 3px; }
+  #tcl-quickcut-concept .preview-routes button { padding: 8px 9px; font-size: 12px; min-height: 42px; }
+  #tcl-quickcut-concept .tv-screen { aspect-ratio: auto; min-height: 540px; }
+  #tcl-quickcut-concept .tv-header { padding: 17px 18px; gap: 9px; }
+  #tcl-quickcut-concept .brand-group { gap: 11px; }
+  #tcl-quickcut-concept .header-program { display: none; }
+  #tcl-quickcut-concept .playback-controls { padding: 0 20px 20px; }
+  #tcl-quickcut-concept .scene-caption { top: 33%; font-size: 16px; letter-spacing: 0; }
+  #tcl-quickcut-concept .control-title { align-items: flex-start; gap: 10px; }
+  #tcl-quickcut-concept h2 { font-size: 26px; }
+  #tcl-quickcut-concept .mode-description { font-size: 11px; max-width: 110px; text-align: right; }
+  #tcl-quickcut-concept .action-row { display: grid; grid-template-columns: 1fr 1.65fr; gap: 11px; }
+  #tcl-quickcut-concept .tv-button { min-width: 0; min-height: 56px; padding: 9px 10px; }
+  #tcl-quickcut-concept .tv-button strong { font-size: 15px; }
+  #tcl-quickcut-concept .feature-button { min-width: 0; }
+  #tcl-quickcut-concept .remote-hint { flex-wrap: wrap; gap: 3px; font-size: 11px; }
+  #tcl-quickcut-concept .tv-dialog { padding: 22px 19px; }
+  #tcl-quickcut-concept .overlay-host { padding: 17px; }
+  #tcl-quickcut-concept .tv-screen.has-dialog .overlay-host { position: relative; min-height: 540px; }
+  #tcl-quickcut-concept .tv-dialog h3 { font-size: 21px; }
+  #tcl-quickcut-concept .dialog-copy { font-size: 13px; }
+  #tcl-quickcut-concept .duration-comparison { gap: 17px; padding: 13px; margin: 18px 0; }
+  #tcl-quickcut-concept .duration-comparison .duration-number { font-size: 29px; }
+  #tcl-quickcut-concept .duration-comparison .duration-unit { margin-left: 3px; }
+  #tcl-quickcut-concept .dialog-actions { flex-direction: column; gap: 10px; }
+  #tcl-quickcut-concept .episode-grid { grid-template-columns: 1fr; }
+  #tcl-quickcut-concept .episode-grid button { flex-direction: row; }
+  #tcl-quickcut-concept .toast-message { top: 78px; font-size: 12px; }
+  #tcl-quickcut-concept .person-one { left: 56%; width: 16%; }
+  #tcl-quickcut-concept .person-two { left: 76%; width: 17%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #tcl-quickcut-concept * { scroll-behavior: auto; }
+}
+
+/* Standalone shell and embedded portfolio use the same dependency-free prototype. */
+:root { color-scheme: light; }
+html, body { margin: 0; padding: 0; width: 100%; background: #f7f4f0; }
+body { overflow-x: hidden; }
+#demo-page { box-sizing: border-box; max-width: 1160px; margin: 0 auto; padding: 28px; }
+html.is-embedded, html.is-embedded body { background: transparent; }
+html.is-embedded #demo-page { max-width: none; padding: 0; }
+html.is-embedded #tcl-quickcut-concept .preview-heading > span:first-child { display: none; }
+html.is-embedded #tcl-quickcut-concept .preview-heading { padding-bottom: 10px; }
+#tcl-quickcut-concept { --preview-text: #292b32; --preview-muted: #6b6560; --preview-active: #302923; --preview-active-text: #fff; }
+#tcl-quickcut-concept button { cursor: pointer; touch-action: manipulation; }
+#tcl-quickcut-concept button:disabled { cursor: default; }
+#tcl-quickcut-concept button:focus-visible,
+#tcl-quickcut-concept input:focus-visible { outline: 3px solid #ff7180; outline-offset: 4px; }
+#tcl-quickcut-concept .preview-routes button:focus-visible { outline: 2px solid #765a48; outline-offset: 2px; }
+#tcl-quickcut-concept .back-button.tv-focused,
+#tcl-quickcut-concept .show-controls.tv-focused,
+#tcl-quickcut-concept .end-secondary button.tv-focused { outline: 3px solid #ff7180; outline-offset: 3px; border-radius: 6px; }
+#tcl-quickcut-concept .tv-screen.has-dialog { aspect-ratio: auto; }
+#tcl-quickcut-concept .tv-screen.has-dialog .overlay-host { position: relative; min-height: 440px; }
+#tcl-quickcut-concept .tv-dialog { max-width: 100%; }
+#tcl-quickcut-concept .preview-caption { line-height: 1.7; }
+#tcl-quickcut-concept .duration-comparison > div { min-width: 0; }
+#tcl-quickcut-concept .preview-routes button { transition: background-color .15s ease; }
+#tcl-quickcut-concept .preview-routes button:hover { background: #e8e0d9; color: #302923; }
+#tcl-quickcut-concept .preview-routes button[aria-pressed="true"]:hover { background: #302923; color: #fff; }
+@media (min-width: 900px) {
+  #tcl-quickcut-concept .tv-screen.has-dialog .overlay-host { min-height: 560px; }
+}
+@media (max-width: 620px) {
+  #demo-page { padding: 18px 12px; }
+  #tcl-quickcut-concept .preview-routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin-bottom: 12px; }
+  #tcl-quickcut-concept .preview-routes button { white-space: nowrap; padding: 8px 5px; font-size: 12px; }
+  #tcl-quickcut-concept .tv-screen { min-height: 530px; border-radius: 10px; }
+  #tcl-quickcut-concept .tv-screen.has-dialog .overlay-host { min-height: 530px; padding: 15px; }
+  #tcl-quickcut-concept .preview-caption { display: block; }
+  #tcl-quickcut-concept .preview-caption span { display: block; }
+  #tcl-quickcut-concept .concept-label { font-size: 11px; }
+  #tcl-quickcut-concept .duration-comparison { justify-content: space-between; gap: 10px; }
+  #tcl-quickcut-concept .dialog-actions .tv-button { min-height: 48px; }
+  #tcl-quickcut-concept .tv-header { padding: 16px 17px; }
+}
+@media (max-width: 360px) {
+  #tcl-quickcut-concept .playback-controls { padding: 0 16px 16px; }
+  #tcl-quickcut-concept .tv-dialog { padding: 20px 15px; }
+  #tcl-quickcut-concept .tv-dialog h3 { font-size: 20px; }
+  #tcl-quickcut-concept .dialog-copy { font-size: 12px; }
+  #tcl-quickcut-concept .duration-comparison .duration-number { font-size: 26px; }
+  #tcl-quickcut-concept .tv-button { gap: 6px; }
+  #tcl-quickcut-concept .tv-button strong { font-size: 14px; }
+  #tcl-quickcut-concept .header-program { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #tcl-quickcut-concept .preview-routes button { transition: none; }
+}
+</style>
+</head>
+<body>
+<main id="demo-page">
+<div id="tcl-quickcut-concept">
+  <div class="preview-heading">
+    <span>播放器内的 AI 快剪</span>
+    <span class="concept-label">项目复盘原型 · 示例内容</span>
+  </div>
+  <nav class="preview-routes" aria-label="查看不同交互页面">
+    <button type="button" data-route="entry" aria-pressed="true">播放入口</button>
+    <button type="button" data-route="intro" aria-pressed="false">首次说明</button>
+    <button type="button" data-route="quick" aria-pressed="false">快剪播放</button>
+    <button type="button" data-route="source" aria-pressed="false">切回原片</button>
+    <button type="button" data-route="end" aria-pressed="false">播完衔接</button>
+  </nav>
+
+  <section class="tv-screen" aria-label="TCL 电视 AI 快剪概念播放器">
+    <div class="film-scene" aria-hidden="true">
+      <div class="window-light"></div>
+      <div class="window-frame"></div>
+      <div class="city city-one"></div>
+      <div class="city city-two"></div>
+      <div class="city city-three"></div>
+      <div class="curtain"></div>
+      <div class="lamp"><span></span></div>
+      <div class="sofa"></div>
+      <div class="person person-one"><span></span></div>
+      <div class="person person-two"><span></span></div>
+      <div class="film-grain"></div>
+    </div>
+    <div class="picture-shade"></div>
+
+    <header class="tv-header">
+      <div class="brand-group">
+        <button type="button" class="back-button" data-action="back" data-tv-focus aria-label="返回">
+          <i data-icon="chevron-left" aria-hidden="true"></i><span>返回</span>
+        </button>
+        <span class="tcl-wordmark">TCL</span>
+        <span class="header-program">好好生活<span class="episode-short">第 8 集</span></span>
+      </div>
+      <span class="mode-label" id="tcl-mode-label">原片</span>
+    </header>
+
+    <div class="scene-caption" id="tcl-subtitle">有些话，总要当面说清楚。</div>
+    <div class="toast-message" id="tcl-toast" role="status" aria-live="polite" hidden></div>
+
+    <section class="playback-controls" id="tcl-controls" aria-label="播放控制">
+      <div class="control-title">
+        <div>
+          <span class="program-meta" id="tcl-program-meta">都市情感 · 第 8 集</span>
+          <h2>好好生活</h2>
+        </div>
+        <span class="mode-description" id="tcl-mode-description">原片播放中</span>
+      </div>
+      <div class="timeline">
+        <input id="tcl-progress" type="range" min="0" max="2700" value="638" step="1"
+          data-tv-focus aria-label="播放进度" aria-valuetext="10分38秒，共45分钟">
+        <div class="time-labels">
+          <span id="tcl-current-time">10:38</span>
+          <span id="tcl-duration">45:00</span>
+        </div>
+      </div>
+      <div class="action-row">
+        <button type="button" class="tv-button compact" data-action="play" data-tv-focus id="tcl-play-button">
+          <i data-icon="pause" aria-hidden="true"></i><span>暂停</span>
+        </button>
+        <button type="button" class="tv-button feature-button tv-focused" data-action="mode" data-tv-focus id="tcl-mode-button">
+          <i data-icon="sparkles" aria-hidden="true"></i>
+          <span><strong>AI 快剪</strong><small>12 分钟看本集</small></span>
+        </button>
+        <button type="button" class="tv-button compact" data-action="episodes" data-tv-focus>
+          <i data-icon="list-video" aria-hidden="true"></i><span>选集</span>
+        </button>
+        <button type="button" class="tv-button quiet compact" data-action="hide" data-tv-focus>
+          <i data-icon="chevron-down" aria-hidden="true"></i><span>收起</span>
+        </button>
+      </div>
+      <div class="remote-hint"><span>↑ ↓ 切换区域　← → 移动焦点</span><span>OK 确认　返回 收起</span></div>
+    </section>
+
+    <button type="button" class="show-controls" data-action="show" data-tv-focus hidden id="tcl-show-controls">显示播放控制</button>
+    <div class="overlay-host" id="tcl-overlay" hidden></div>
+  </section>
+  <div class="preview-caption"><span>点击操作，或用方向键 / Enter / Esc</span><span>复盘原型 · 剧名、画面、片长与时间映射均为演示</span></div>
+</div>
+
+
+
+<script>
+(function () {
+  'use strict';
+  const root = document.getElementById('tcl-quickcut-concept');
+  if (!root) return;
+  const screen = root.querySelector('.tv-screen');
+  const controls = root.querySelector('#tcl-controls');
+  const overlay = root.querySelector('#tcl-overlay');
+  const progress = root.querySelector('#tcl-progress');
+  const modeLabel = root.querySelector('#tcl-mode-label');
+  const modeDescription = root.querySelector('#tcl-mode-description');
+  const modeButton = root.querySelector('#tcl-mode-button');
+  const playButton = root.querySelector('#tcl-play-button');
+  const subtitle = root.querySelector('#tcl-subtitle');
+  const toastElement = root.querySelector('#tcl-toast');
+  const showButton = root.querySelector('#tcl-show-controls');
+  const episodeInfo = {
+    8: { original: 2700, quick: 720 },
+    9: { original: 2640, quick: 660 },
+    10: { original: 2700, quick: 0 }
+  };
+  const baseSegments = [
+    { q0: 0, q1: 100, o0: 15, context: 0 },
+    { q0: 100, q1: 220, o0: 604, context: 600 },
+    { q0: 220, q1: 340, o0: 1020, context: 1000 },
+    { q0: 340, q1: 470, o0: 1530, context: 1500 },
+    { q0: 470, q1: 610, o0: 2030, context: 2010 },
+    { q0: 610, q1: 720, o0: 2530, context: 2500 }
+  ];
+  let episode = 8, mode = 'original', position = 638, savedQuick = null;
+  let playing = true, controlsVisible = true, modal = null, route = 'entry';
+  let introduced = false, toastTimer = null, modalStack = [];
+  let playerFocusAction = 'mode', playbackTimer = null, destroyed = false;
+  let inViewport = true, heightFrame = null, lastReportedHeight = 0;
+  const demoPage = document.getElementById('demo-page');
+  const parentOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+  const RESIZE_MESSAGE = 'tcl-quickcut:resize';
+
+  const iconPaths = {
+    'chevron-left': '<path d="m15 18-6-6 6-6"/>',
+    'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+    'pause': '<path d="M8 5v14M16 5v14" stroke-width="3"/>',
+    'play': '<path d="m8 5 11 7-11 7Z" fill="currentColor" stroke-width="1.5"/>',
+    'sparkles': '<path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6Z"/><path d="M20 2v4M18 4h4"/>',
+    'list-video': '<path d="M4 5h16M4 10h10M4 15h7M4 20h7"/><path d="m16 13 5 3.5-5 3.5Z"/>',
+    'film': '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4M7 12h10"/>'
+  };
+  function icons() {
+    root.querySelectorAll('i[data-icon]').forEach(function (element) {
+      const path = iconPaths[element.dataset.icon] || iconPaths.play;
+      element.outerHTML = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + path + '</svg>';
+    });
+  }
+  function reportHeight() {
+    if (destroyed || heightFrame !== null) return;
+    heightFrame = requestAnimationFrame(function () {
+      heightFrame = null;
+      // Measure natural content, never iframe viewport height: the parent can shrink too.
+      const height = Math.max(320, Math.ceil(demoPage.getBoundingClientRect().height));
+      if (height === lastReportedHeight) return;
+      lastReportedHeight = height;
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: RESIZE_MESSAGE, height: height }, parentOrigin);
+      }
+    });
+  }
+  function rememberPlayerFocus() {
+    if (modal) return;
+    const active = document.activeElement;
+    playerFocusAction = active && screen.contains(active) && active.dataset.action
+      ? active.dataset.action : (controlsVisible ? 'mode' : 'show');
+  }
+  function playbackRoute() {
+    return mode === 'quick' ? 'quick' : (savedQuick !== null ? 'source' : 'entry');
+  }
+  function format(seconds) {
+    const value = Math.max(0, Math.floor(seconds));
+    return String(Math.floor(value / 60)).padStart(2, '0') + ':' + String(value % 60).padStart(2, '0');
+  }
+  function duration() { return episodeInfo[episode][mode]; }
+  function segments() {
+    const qScale = episodeInfo[episode].quick / 720;
+    const oScale = episodeInfo[episode].original / 2700;
+    return baseSegments.map(function (s) {
+      return { q0: Math.round(s.q0 * qScale), q1: Math.round(s.q1 * qScale), o0: Math.round(s.o0 * oScale), context: Math.round(s.context * oScale) };
+    });
+  }
+  function quickToSource(q) {
+    const list = segments();
+    const s = list.find(function (item) { return q < item.q1; }) || list[list.length - 1];
+    return { current: Math.min(episodeInfo[episode].original, s.o0 + q - s.q0), context: s.context };
+  }
+  function sourceToQuick(o) {
+    const list = segments();
+    for (const s of list) {
+      if (o < s.o0) return s.q0;
+      if (o <= s.o0 + s.q1 - s.q0) return s.q0 + o - s.o0;
+    }
+    return Math.max(0, episodeInfo[episode].quick - 1);
+  }
+  function button(action, label, primary) {
+    return '<button type="button" class="tv-button' + (primary ? ' primary' : '') + '" data-action="' + action + '" data-tv-focus>' + label + '</button>';
+  }
+  function dialog(content) {
+    overlay.innerHTML = '<section class="tv-dialog" role="dialog" aria-modal="true" aria-labelledby="tcl-dialog-title">' + content + '</section>';
+    overlay.hidden = false;
+    icons();
+  }
+  function visibleFocusables() {
+    const area = modal ? overlay : screen;
+    return Array.from(area.querySelectorAll('[data-tv-focus]')).filter(function (el) { return el.getClientRects().length > 0 && !el.disabled && !el.closest('[inert]'); });
+  }
+  function focusElement(element, realFocus) {
+    if (!element || element.disabled || !element.getClientRects().length || element.closest('[inert]')) return;
+    root.querySelectorAll('.tv-focused').forEach(function (el) { el.classList.remove('tv-focused'); });
+    element.classList.add('tv-focused');
+    if (realFocus) element.focus({ preventScroll: true });
+  }
+  function focusAction(action) {
+    requestAnimationFrame(function () {
+      if (destroyed) return;
+      const area = modal ? overlay : screen;
+      focusElement(area.querySelector('[data-action="' + action + '"]'), true);
+    });
+  }
+  function focusPlayback() {
+    focusAction(controlsVisible ? (modeButton.disabled ? 'play' : 'mode') : 'show');
+  }
+  function saveModal() {
+    if (!modal) return;
+    modalStack.push({
+      modal: modal,
+      markup: overlay.innerHTML,
+      route: route,
+      focusAction: document.activeElement && document.activeElement.dataset.action,
+      focusEpisode: document.activeElement && document.activeElement.dataset.episode
+    });
+  }
+  function returnFromModal() {
+    const previous = modalStack.pop();
+    if (previous) {
+      modal = previous.modal;
+      route = previous.route;
+      overlay.innerHTML = previous.markup;
+      overlay.hidden = false;
+      render();
+      requestAnimationFrame(function () {
+        const target = previous.focusEpisode
+          ? overlay.querySelector('[data-episode="' + previous.focusEpisode + '"]')
+          : overlay.querySelector('[data-action="' + previous.focusAction + '"]');
+        focusElement(target || visibleFocusables()[0], true);
+      });
+      return;
+    }
+    closeModal();
+    route = playbackRoute();
+    render();
+    const target = screen.querySelector('[data-action="' + playerFocusAction + '"]');
+    if (target && target.getClientRects().length && !target.disabled && !target.closest('[inert]')) {
+      focusElement(target, true);
+    } else { focusPlayback(); }
+  }
+  function toast(text) {
+    clearTimeout(toastTimer);
+    toastElement.textContent = text;
+    toastElement.hidden = false;
+    toastTimer = setTimeout(function () { toastElement.hidden = true; }, 6500);
+  }
+  function renderTime() {
+    const total = duration();
+    position = Math.max(0, Math.min(total, position));
+    progress.max = String(total);
+    progress.value = String(position);
+    progress.style.setProperty('--played', (total ? (position / total) * 100 : 0) + '%');
+    progress.setAttribute('aria-valuetext', format(position) + '，共 ' + format(total));
+    root.querySelector('#tcl-current-time').textContent = format(position);
+    root.querySelector('#tcl-duration').textContent = format(total);
+  }
+  function render() {
+    screen.classList.toggle('has-dialog', !!modal);
+    screen.querySelector('.tv-header').inert = !!modal;
+    controls.inert = !!modal;
+    showButton.inert = !!modal;
+    controls.hidden = !controlsVisible;
+    showButton.hidden = controlsVisible || !!modal;
+    root.querySelector('#tcl-program-meta').textContent = '都市情感 · 第 ' + episode + ' 集';
+    root.querySelector('.episode-short').textContent = '第 ' + episode + ' 集';
+    modeLabel.textContent = mode === 'quick' ? 'AI 快剪' : '原片';
+    modeLabel.classList.toggle('is-quick', mode === 'quick');
+    modeDescription.textContent = mode === 'quick'
+      ? '精简版 · 随时切回原片'
+      : ((playing ? '原片播放中' : '原片已暂停') + (savedQuick !== null ? ' · 已保留快剪进度' : ''));
+    if (mode === 'quick') {
+      modeButton.innerHTML = '<i data-icon="film" aria-hidden="true"></i><span><strong>切回原片</strong><small>从本段前文继续</small></span>';
+    } else if (savedQuick !== null) {
+      modeButton.innerHTML = '<i data-icon="sparkles" aria-hidden="true"></i><span><strong>返回快剪</strong><small>接着 ' + format(savedQuick) + ' 观看</small></span>';
+    } else if (!episodeInfo[episode].quick) {
+      modeButton.innerHTML = '<span><strong>本集暂无快剪</strong><small>可继续观看原片</small></span>';
+    } else {
+      modeButton.innerHTML = '<i data-icon="sparkles" aria-hidden="true"></i><span><strong>AI 快剪</strong><small>' + Math.round(episodeInfo[episode].quick / 60) + ' 分钟看本集</small></span>';
+    }
+    modeButton.disabled = !episodeInfo[episode].quick;
+    playButton.innerHTML = '<i data-icon="' + (playing ? 'pause' : 'play') + '" aria-hidden="true"></i><span>' + (playing ? '暂停' : '播放') + '</span>';
+    subtitle.textContent = mode === 'quick' ? '原来，你一直都记得。' : '有些话，总要当面说清楚。';
+    subtitle.hidden = !!modal;
+    root.querySelectorAll('[data-route]').forEach(function (el) { el.setAttribute('aria-pressed', String(el.dataset.route === route)); });
+    renderTime();
+    icons();
+    reportHeight();
+  }
+  function closeModal() {
+    modal = null;
+    modalStack = [];
+    overlay.hidden = true;
+    overlay.innerHTML = '';
+    render();
+  }
+  function openIntro() {
+    rememberPlayerFocus();
+    modal = 'intro';
+    route = 'intro';
+    const quickStart = sourceToQuick(position);
+    const remaining = Math.ceil((episodeInfo[episode].quick - quickStart) / 60);
+    dialog('<div class="dialog-eyebrow">AI 快剪</div>' +
+      '<h3 id="tcl-dialog-title">时间少一点，剧情接得上。</h3>' +
+      '<p class="dialog-copy">保留主要剧情和关键对话，精简重复片段。<br>部分细节会省略，你可以随时切回原片。</p>' +
+      '<div class="duration-comparison"><div><div class="duration-label">本集原片</div><span class="duration-number">' + Math.round(episodeInfo[episode].original / 60) + '</span><span class="duration-unit">分钟</span></div><span class="arrow">→</span><div class="short-duration"><div class="duration-label">AI 快剪</div><span class="duration-number">' + Math.round(episodeInfo[episode].quick / 60) + '</span><span class="duration-unit">分钟</span></div></div>' +
+      '<p class="resume-note">从当前剧情继续 · 快剪还剩约 ' + remaining + ' 分钟</p>' +
+      '<div class="dialog-actions">' + button('start-quick', '开始快剪', true) + button('continue-original', '继续原片', false) + '</div>');
+    render();
+    focusAction('start-quick');
+  }
+  function startQuick(fromStart) {
+    if (!episodeInfo[episode].quick) { toast('本集暂无快剪，可继续观看原片'); return; }
+    const target = fromStart ? 0 : (savedQuick !== null ? savedQuick : sourceToQuick(position));
+    mode = 'quick';
+    position = target;
+    savedQuick = null;
+    introduced = true;
+    playing = true;
+    controlsVisible = true;
+    route = 'quick';
+    closeModal();
+    toast('已进入 AI 快剪 · 可随时切回原片');
+    focusAction('mode');
+  }
+  function switchToOriginal() {
+    const mapped = quickToSource(position);
+    savedQuick = position;
+    mode = 'original';
+    position = mapped.context;
+    route = 'source';
+    playing = true;
+    controlsVisible = true;
+    render();
+    toast('已切回原片 · 从本段前文 ' + format(position) + ' 开始');
+    focusAction('mode');
+  }
+  function endScreen() {
+    playing = false;
+    modal = 'end';
+    modalStack = [];
+    route = 'end';
+    position = duration();
+    const next = episode + 1;
+    const nextInfo = episodeInfo[next];
+    const hasQuick = nextInfo && nextInfo.quick > 0;
+    const keepQuick = mode === 'quick' && hasQuick;
+    const nextDescription = nextInfo
+      ? (keepQuick ? 'AI 快剪 ' + Math.round(nextInfo.quick / 60) + ' 分钟 · 原片 ' + Math.round(nextInfo.original / 60) + ' 分钟' : '原片 ' + Math.round(nextInfo.original / 60) + ' 分钟' + (mode === 'quick' ? ' · 本集暂无快剪' : ''))
+      : '已到达本次演示的最后一集';
+    const nextTitle = nextInfo ? '好好生活 · 第 ' + next + ' 集' : '继续探索其他剧集';
+    dialog('<div class="dialog-eyebrow">' + (mode === 'quick' ? '本集快剪已看完' : '本集原片已看完') + '</div>' +
+      '<h3 id="tcl-dialog-title">接着看，还是慢慢回味？</h3>' +
+      '<div class="next-episode"><span class="next-label">接下来</span><strong>' + nextTitle + '</strong><small>' + nextDescription + '</small></div>' +
+      '<div class="dialog-actions">' + button(nextInfo ? 'next' : 'episodes', nextInfo ? (keepQuick ? '下一集快剪' : '下一集原片') : '选集', true) + button('replay-original', '看本集原片', false) + '</div>' +
+      '<div class="end-secondary"><button type="button" data-action="episodes" data-tv-focus>选集</button></div>');
+    render();
+    focusAction(nextInfo ? 'next' : 'episodes');
+  }
+  function openEpisodes() {
+    if (modal === 'confirm-original') { returnFromModal(); return; }
+    rememberPlayerFocus();
+    const returnLabel = modal === 'end' ? '返回播完页' : (modal === 'details' ? '返回详情' : '返回播放');
+    saveModal();
+    modal = 'episodes';
+    dialog('<div class="dialog-eyebrow">好好生活</div><h3 id="tcl-dialog-title">选择剧集</h3>' +
+      '<div class="episode-grid">' +
+      '<button type="button" class="tv-button" data-episode="8" data-tv-focus><strong>第 8 集</strong><small>快剪 12 分钟</small></button>' +
+      '<button type="button" class="tv-button" data-episode="9" data-tv-focus><strong>第 9 集</strong><small>快剪 11 分钟</small></button>' +
+      '<button type="button" class="tv-button" data-episode="10" data-tv-focus><strong>第 10 集</strong><small>仅原片 · 45 分钟</small></button></div>' +
+      '<div class="end-secondary"><button type="button" data-action="close" data-tv-focus>' + returnLabel + '</button></div>');
+    render();
+    requestAnimationFrame(function () { focusElement(overlay.querySelector('[data-episode="' + episode + '"]'), true); });
+  }
+  function selectEpisode(number, targetMode) {
+    if (!episodeInfo[number]) return;
+    if (targetMode === 'quick' && !episodeInfo[number].quick) targetMode = 'original';
+    episode = number;
+    savedQuick = null;
+    mode = targetMode;
+    position = 0;
+    playing = true;
+    controlsVisible = true;
+    route = mode === 'quick' ? 'quick' : 'entry';
+    closeModal();
+    toast('开始播放第 ' + episode + ' 集 · ' + (mode === 'quick' ? 'AI 快剪' : '原片'));
+    focusAction('play');
+  }
+  function openDetails() {
+    rememberPlayerFocus();
+    modalStack = [];
+    modal = 'details';
+    playing = false;
+    dialog('<div class="dialog-eyebrow">剧集详情</div><h3 id="tcl-dialog-title">好好生活</h3>' +
+      '<p class="dialog-copy">第 ' + episode + ' 集 · ' + (mode === 'quick' ? '快剪' : '原片') + ' 已看到 ' + format(position) + '<br>观看进度已为你保留。</p>' +
+      '<div class="dialog-actions">' + button('resume-player', position >= duration() ? '重新播放' : '继续播放', true) + button('episodes', '选集', false) + '</div>');
+    render();
+    focusAction('resume-player');
+  }
+  function back() {
+    if (modal === 'end') { openDetails(); return; }
+    if (modal === 'details') {
+      // The preview has no outer TV home page; return keyboard control to its route picker.
+      root.querySelector('[data-route="entry"]').focus({ preventScroll: true });
+      toast('已退出播放器操作 · 可选择上方页面继续体验');
+      return;
+    }
+    if (modal) {
+      returnFromModal();
+    } else if (controlsVisible) {
+      controlsVisible = false; render(); focusAction('show');
+    } else {
+      openDetails();
+    }
+  }
+  function activate(action) {
+    if (action === 'back') back();
+    if (action === 'play') {
+      if (position >= duration()) position = 0;
+      playing = !playing; route = playbackRoute(); render(); focusAction('play');
+    }
+    if (action === 'mode') {
+      if (mode === 'quick') switchToOriginal();
+      else if (savedQuick !== null || introduced) startQuick(false);
+      else openIntro();
+    }
+    if (action === 'start-quick') startQuick(false);
+    if (action === 'continue-original' || action === 'close') {
+      returnFromModal();
+    }
+    if (action === 'episodes') openEpisodes();
+    if (action === 'hide') { controlsVisible = false; render(); focusAction('show'); }
+    if (action === 'show') { controlsVisible = true; render(); focusPlayback(); }
+    if (action === 'replay-original') selectEpisode(episode, 'original');
+    if (action === 'resume-player') {
+      if (position >= duration()) position = 0;
+      playing = true; controlsVisible = true; route = playbackRoute(); closeModal(); focusAction('play');
+    }
+    if (action === 'confirm-original') selectEpisode(10, 'original');
+    if (action === 'next') {
+      const next = episode + 1;
+      if (!episodeInfo[next]) { openEpisodes(); return; }
+      const targetMode = mode === 'quick' && episodeInfo[next].quick ? 'quick' : 'original';
+      selectEpisode(next, targetMode);
+    }
+  }
+  function setRoute(value) {
+    clearTimeout(toastTimer);
+    toastElement.hidden = true;
+    episode = 8; mode = 'original'; position = 638; savedQuick = null;
+    playing = true; controlsVisible = true; route = value; modal = null; modalStack = [];
+    overlay.hidden = true; overlay.innerHTML = '';
+    if (value === 'intro') { openIntro(); return; }
+    if (value === 'quick') { mode = 'quick'; position = 134; introduced = true; }
+    if (value === 'source') { mode = 'quick'; position = 134; introduced = true; switchToOriginal(); return; }
+    if (value === 'end') { mode = 'quick'; introduced = true; endScreen(); return; }
+    if (value === 'entry') introduced = false;
+    render(); focusAction('mode');
+  }
+  root.addEventListener('click', function (event) {
+    const routeButton = event.target.closest('[data-route]');
+    if (routeButton) { setRoute(routeButton.dataset.route); return; }
+    const episodeButton = event.target.closest('[data-episode]');
+    if (episodeButton) {
+      const number = Number(episodeButton.dataset.episode);
+      if (number === 10 && mode === 'quick') {
+        saveModal();
+        modal = 'confirm-original';
+        dialog('<div class="dialog-eyebrow">观看模式</div><h3 id="tcl-dialog-title">第 10 集暂无快剪</h3><p class="dialog-copy">你可以观看本集原片，片长 45 分钟。</p><div class="dialog-actions">' + button('confirm-original', '播放原片', true) + button('episodes', '返回选集', false) + '</div>');
+        render(); focusAction('episodes');
+      } else {
+        selectEpisode(number, mode === 'quick' && episodeInfo[number].quick ? 'quick' : 'original');
+      }
+      return;
+    }
+    const actionButton = event.target.closest('[data-action]');
+    if (actionButton) activate(actionButton.dataset.action);
+  });
+  root.addEventListener('focusin', function (event) {
+    if (event.target.matches('[data-tv-focus]')) {
+      if (modal && !overlay.contains(event.target)) { focusElement(visibleFocusables()[0], true); return; }
+      focusElement(event.target, false);
+    }
+  });
+  progress.addEventListener('input', function () {
+    position = Number(progress.value);
+    if (position >= duration()) { endScreen(); return; }
+    renderTime();
+  });
+  root.addEventListener('keydown', function (event) {
+    const routeButton = event.target.closest('[data-route]');
+    if (routeButton) {
+      const routes = Array.from(root.querySelectorAll('[data-route]'));
+      const index = routes.indexOf(routeButton);
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'Home' || event.key === 'End') {
+        event.preventDefault();
+        const target = event.key === 'Home' ? 0 : event.key === 'End' ? routes.length - 1
+          : (index + (event.key === 'ArrowRight' ? 1 : -1) + routes.length) % routes.length;
+        routes[target].focus({ preventScroll: true });
+      }
+      return;
+    }
+    if (event.key === 'Escape') { event.preventDefault(); back(); return; }
+    if (event.key === 'Tab' && modal) {
+      const items = visibleFocusables();
+      const current = items.indexOf(document.activeElement);
+      if (!items.length) { event.preventDefault(); return; }
+      if (current < 0 || (!event.shiftKey && current === items.length - 1) || (event.shiftKey && current === 0)) {
+        event.preventDefault();
+        focusElement(event.shiftKey ? items[items.length - 1] : items[0], true);
+      }
+      return;
+    }
+    const directions = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+    if (!directions.includes(event.key) || event.target.closest('[data-route]')) return;
+    event.preventDefault();
+    if (document.activeElement === progress && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      position = Math.max(0, Math.min(duration(), position + (event.key === 'ArrowRight' ? 10 : -10)));
+      if (position === duration()) endScreen(); else renderTime();
+      return;
+    }
+    const items = visibleFocusables();
+    const current = items.includes(document.activeElement) ? document.activeElement : items[0];
+    if (!current) return;
+    const r = current.getBoundingClientRect();
+    const cx = r.x + r.width / 2, cy = r.y + r.height / 2;
+    const vertical = event.key === 'ArrowUp' || event.key === 'ArrowDown';
+    const sign = event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1;
+    const candidates = items.filter(function (el) { return el !== current; }).map(function (el) {
+      const b = el.getBoundingClientRect();
+      const dx = b.x + b.width / 2 - cx, dy = b.y + b.height / 2 - cy;
+      const primary = vertical ? dy : dx, secondary = vertical ? dx : dy;
+      return { el: el, primary: primary * sign, score: Math.abs(primary) + 2.5 * Math.abs(secondary) };
+    }).filter(function (item) { return item.primary > 8; }).sort(function (a, b) { return a.score - b.score; });
+    if (candidates.length) focusElement(candidates[0].el, true);
+  });
+  function startTimer() {
+    if (playbackTimer !== null || destroyed) return;
+    playbackTimer = setInterval(function () {
+      if (!root.isConnected) { cleanup(); return; }
+      if (!playing || modal || document.hidden || !inViewport) return;
+      position = Math.min(duration(), position + 1);
+      if (position >= duration()) endScreen(); else renderTime();
+    }, 1000);
+  }
+  function stopTimer() {
+    clearInterval(playbackTimer);
+    playbackTimer = null;
+  }
+  const heightObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(reportHeight) : null;
+  if (heightObserver) heightObserver.observe(demoPage);
+  const visibilityObserver = typeof IntersectionObserver !== 'undefined'
+    ? new IntersectionObserver(function (entries) { inViewport = entries[0].isIntersecting; }, { threshold: 0.01 })
+    : null;
+  if (visibilityObserver) visibilityObserver.observe(root);
+  function cleanup() {
+    destroyed = true;
+    stopTimer();
+    clearTimeout(toastTimer);
+    if (heightFrame !== null) cancelAnimationFrame(heightFrame);
+    heightFrame = null;
+    if (heightObserver) heightObserver.disconnect();
+    if (visibilityObserver) visibilityObserver.disconnect();
+  }
+  window.addEventListener('pagehide', function (event) {
+    stopTimer();
+    clearTimeout(toastTimer);
+    if (!event.persisted) cleanup();
+  });
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) { startTimer(); lastReportedHeight = 0; reportHeight(); }
+  });
+  window.addEventListener('resize', reportHeight, { passive: true });
+  window.addEventListener('message', function (event) {
+    if (event.source !== window.parent || (parentOrigin !== '*' && event.origin !== parentOrigin)) return;
+    if (event.data && event.data.type === 'tcl-quickcut:measure') {
+      lastReportedHeight = 0;
+      reportHeight();
+    }
+  });
+  render();
+  startTimer();
+  reportHeight();
+})();
+</script>
+
+<noscript><p style="font:14px/1.8 sans-serif;padding:18px;color:#302923">这是交互复盘原型，需启用 JavaScript 以体验页面切换。当前画面展示播放器内的 AI 快剪入口；剧名、画面与片长均为演示。</p></noscript>
+</main>
+</body>
+</html>
