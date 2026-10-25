@@ -483,6 +483,8 @@
   'use strict';
   const TAU = Math.PI * 2;
   const C = { ink: '#526f61', water: '#86c9c8', grass: '#b7cf89', sand: '#f2e2b4' };
+  const BOUNDS = Object.freeze({width:2000,height:1700});
+  const CENTER = Object.freeze({x:1000,y:760});
   let groundCache = null;
   const spriteCache = new Map();
   function rnd(seed) { let a = seed >>> 0; return () => { a += 0x6D2B79F5; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -490,7 +492,18 @@
   function line(c, pts, stroke, lw = 2) { c.beginPath(); c.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.strokeStyle = stroke; c.lineWidth = lw; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); }
   function poly(c, pts, fill, stroke, lw = 2) { c.beginPath(); c.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.closePath(); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.strokeStyle = stroke; c.lineWidth = lw; c.lineJoin = 'round'; c.stroke(); } }
   function round(c, x, y, w, h, r, fill, stroke, lw = 2) { c.beginPath(); c.roundRect(x, y, w, h, r); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.strokeStyle = stroke; c.lineWidth = lw; c.stroke(); } }
-  function shoreFactor(angle) { return 1 + .038 * Math.sin(angle * 3 + .5) + .028 * Math.cos(angle * 5 - .9) + .013 * Math.sin(angle * 9); }
+  function shoreBump(angle,center,spread,amount) {
+    const distance=Math.abs(Math.atan2(Math.sin(angle-center),Math.cos(angle-center)));
+    return distance<spread?amount*Math.cos(distance/spread*Math.PI/2)**2:0;
+  }
+  function shoreFactor(angle) {
+    // Additive lobes preserve every old piece of land. Compact angular support
+    // leaves the eastern fishing shore and its existing jetty exactly in place.
+    return 1 + .038 * Math.sin(angle * 3 + .5) + .028 * Math.cos(angle * 5 - .9) + .013 * Math.sin(angle * 9)
+      + shoreBump(angle,Math.PI*1.5,1.30,.42)
+      + shoreBump(angle,Math.PI*.5,1.30,.46)
+      + shoreBump(angle,Math.PI,1.10,.10);
+  }
   function islandPath(c, expand = 0, shrink = 1, yOffset = 0) {
     c.beginPath();
     for (let i = 0; i <= 120; i++) {
@@ -518,21 +531,39 @@
     home:[605,526], village:[740,690], meadow:[1000,735], east:[1225,780],
     shore:[1450,803], dock:[1652,803],
     lowerWest:[815,900], lowerMiddle:[1020,968], lowerEast:[1250,930],
-    garden:[630,905], picnic:[1020,882], bench:[1350,653]
+    garden:[630,905], picnic:[1020,882], bench:[1350,653],
+    upperMeadow:[930,605], northPass:[965,325], northMeadow:[700,240],
+    westHill:[415,410], westGroves:[295,740], southwest:[445,1100],
+    southMeadow:[820,1285], southLookout:[1130,1310], pinkGarden:[1430,1155]
   };
   const roads = [
-    {from:'home',to:'village',controls:[610,600,650,665],width:60},
-    {from:'village',to:'meadow',controls:[830,715,920,730],width:60},
-    {from:'meadow',to:'east',controls:[1080,740,1150,760],width:60},
-    {from:'east',to:'shore',controls:[1300,800,1385,803],width:60},
-    {from:'shore',to:'dock',controls:[1510,803,1585,803],width:60},
-    {from:'village',to:'lowerWest',controls:[755,760,820,825],width:52},
-    {from:'lowerWest',to:'lowerMiddle',controls:[810,960,930,968],width:52},
-    {from:'lowerMiddle',to:'lowerEast',controls:[1120,968,1200,960],width:52},
-    {from:'lowerEast',to:'shore',controls:[1330,882,1385,803],width:52},
-    {from:'lowerWest',to:'garden',controls:[755,915,685,905],width:48},
-    {from:'lowerMiddle',to:'picnic',controls:[1020,940,1020,910],width:52},
-    {from:'east',to:'bench',controls:[1285,755,1315,700],width:50}
+    {from:'home',to:'village',controls:[610,600,650,665],width:54},
+    {from:'village',to:'meadow',controls:[830,715,920,730],width:54},
+    {from:'meadow',to:'east',controls:[1080,740,1150,760],width:54},
+    {from:'east',to:'shore',controls:[1300,800,1385,803],width:54},
+    {from:'shore',to:'dock',controls:[1510,803,1585,803],width:54},
+    {from:'village',to:'lowerWest',controls:[755,760,820,825],width:44},
+    {from:'lowerWest',to:'lowerMiddle',controls:[810,960,930,968],width:44},
+    {from:'lowerMiddle',to:'lowerEast',controls:[1120,968,1200,960],width:44},
+    {from:'lowerEast',to:'shore',controls:[1330,882,1385,803],width:44},
+    {from:'lowerWest',to:'garden',controls:[755,915,685,905],width:44},
+    {from:'lowerMiddle',to:'picnic',controls:[1020,940,1020,910],width:44},
+    {from:'east',to:'bench',controls:[1285,755,1315,700],width:44},
+    // A generous woodland loop passes around the original village. Each turn
+    // has a destination and each end rejoins the existing network.
+    {from:'meadow',to:'upperMeadow',controls:[970,710,935,685],width:40},
+    {from:'upperMeadow',to:'northPass',controls:[925,515,990,405],width:38},
+    {from:'northPass',to:'northMeadow',controls:[940,245,810,215],width:38},
+    {from:'northMeadow',to:'westHill',controls:[545,255,460,320],width:38},
+    {from:'westHill',to:'westGroves',controls:[380,490,340,610],width:38},
+    {from:'westGroves',to:'southwest',controls:[220,850,290,1045],width:38},
+    {from:'southwest',to:'garden',controls:[550,1055,575,920],width:40},
+    // The southern walk is a long unhurried arc, with the pink grove as a quiet
+    // turning point. It returns to the old lower path, never crossing the jetty.
+    {from:'southwest',to:'southMeadow',controls:[565,1190,700,1260],width:38},
+    {from:'southMeadow',to:'southLookout',controls:[920,1290,1030,1312],width:38},
+    {from:'southLookout',to:'pinkGarden',controls:[1260,1325,1380,1220],width:38},
+    {from:'pinkGarden',to:'lowerEast',controls:[1480,1080,1280,1065],width:40}
   ];
   const roadLandings = [
     {x:605,y:533,rx:42,ry:24}
@@ -608,14 +639,14 @@
     // Quiet speckles keep the connected paths feeling like soft sandy trails.
     const gravel=rnd(5808);
     for(let i=0;i<600;i++){
-      const x=550+gravel()*1100,y=535+gravel()*470;
+      const x=180+gravel()*1500,y=180+gravel()*1210;
       if(nearRoad(x,y,-9))ellipse(c,x,y,.6+gravel()*1.2,.4+gravel()*.7,i%3?'rgba(186,161,111,.22)':'rgba(255,250,220,.48)');
     }
     c.restore();
   }
   function ground() {
     if (groundCache) return groundCache;
-    const cv = document.createElement('canvas'); cv.width = 2000; cv.height = 1500; const c = cv.getContext('2d');
+    const cv = document.createElement('canvas'); cv.width = BOUNDS.width; cv.height = BOUNDS.height; const c = cv.getContext('2d');
     islandPath(c, 7, 1, 17); c.fillStyle = '#629f9b'; c.fill();
     islandPath(c); c.fillStyle = '#e8cc95'; c.fill();
     islandPath(c, 0, .995, -8); c.fillStyle = '#f5e7bd'; c.fill();
@@ -623,30 +654,45 @@
     islandPath(c, 0, .94, -16); c.fillStyle = '#b9cf8e'; c.fill();
     c.save(); islandPath(c, 0, .93, -19); c.clip();
     const rg = rnd(3712);
-    for (let i = 0; i < 180; i++) {
-      const x = 220 + rg() * 1580, y = 270 + rg() * 960;
+    for (let i = 0; i < 255; i++) {
+      const x = 125 + rg() * 1720, y = 70 + rg() * 1420;
       ellipse(c, x, y, 25 + rg() * 110, 10 + rg() * 45, ['#b3cc87', '#bfd596', '#b5cd87', '#c1d89a', '#b0c883'][i % 5]);
     }
-    for (let i = 0; i < 7000; i++) {
-      const x = 210 + rg() * 1580, y = 250 + rg() * 1000;
+    for (let i = 0; i < 10200; i++) {
+      const x = 125 + rg() * 1720, y = 70 + rg() * 1420;
       c.fillStyle = i % 3 ? 'rgba(240,247,201,.17)' : 'rgba(112,153,89,.12)'; c.fillRect(x, y, rg() * 3 + 1, rg() * 2 + 1);
     }
-    for (let i = 0; i < 460; i++) {
-      const x = 210 + rg() * 1580, y = 250 + rg() * 1000, s = .5 + rg() * .75;
+    for (let i = 0; i < 655; i++) {
+      const x = 125 + rg() * 1720, y = 70 + rg() * 1420, s = .5 + rg() * .75;
       c.save(); c.translate(x, y); c.scale(s, s);
       line(c, [-5, 2, -7, -4], '#94b675', 1.4); line(c, [-1, 3, -1, -7], '#a2bf7b', 1.4); line(c, [3, 2, 6, -3], '#94b675', 1.4); c.restore();
     }
     drawRoads(c);
-    for (let i = 0; i < 125; i++) {
-      const x = 330 + rg() * 1320, y = 420 + rg() * 710;
+    for (let i = 0; i < 175; i++) {
+      const x = 220 + rg() * 1480, y = 175 + rg() * 1175;
       if ((x > 510 && x < 780 && y < 580) || (x > 900 && x < 1150 && y > 720 && y < 890)) continue;
       const scale=.65+rg()*.4;
       if(nearRoad(x,y,12))continue;
       flower(c, x, y, scale, ['#fff8de', '#f7d7ce', '#f4eac0', '#e9eec9'][i % 4]);
     }
+    // Intentional flower drifts give the long walks a sequence of quiet places.
+    // The margins stay clear, including the visually smoothed junction curves.
+    const flowerFields=[
+      {x:785,y:350,rx:94,ry:46,color:'#fff8df'},
+      {x:530,y:700,rx:82,ry:48,color:'#f6e7c2'},
+      {x:650,y:1185,rx:115,ry:53,color:'#fff6de'},
+      {x:1035,y:1223,rx:106,ry:48,color:'#f5d9ce'},
+      {x:1415,y:1150,rx:66,ry:40,color:'#f3d3ca'}
+    ];
+    for(const field of flowerFields)for(let i=0;i<36;i++){
+      const angle=rg()*TAU,radius=Math.sqrt(rg());
+      const x=field.x+Math.cos(angle)*field.rx*radius,y=field.y+Math.sin(angle)*field.ry*radius;
+      if(nearRoad(x,y,17))continue;
+      flower(c,x,y,.55+rg()*.4,i%5?field.color:'#f1e5bb');
+    }
     c.restore();
     // The warm sandy fringe has tiny pebbles, starfish and sea grass.
-    for (let i = 0; i < 130; i++) {
+    for (let i = 0; i < 180; i++) {
       const a = rg() * TAU, r = shoreFactor(a), q = .958 + rg() * .025;
       const x = 1000 + Math.cos(a) * 790 * r * q, y = 752 + Math.sin(a) * 470 * r * q;
       ellipse(c, x, y, 1.5 + rg() * 2, 1 + rg() * 1.4, '#d4bd8b');
@@ -657,7 +703,7 @@
     return cv;
   }
   const waveRng = rnd(24142);
-  const waves = Array.from({length:150}, () => ({x:waveRng()*2900-450,y:waveRng()*2000-250,w:8+waveRng()*28,p:waveRng()*TAU,s:.3+waveRng()*.5}));
+  const waves = Array.from({length:190}, () => ({x:waveRng()*2900-450,y:waveRng()*2300-300,w:8+waveRng()*28,p:waveRng()*TAU,s:.3+waveRng()*.5}));
   function drawGround(c, time = 0) {
     c.save();
     const grad = c.createLinearGradient(0,-500,0,1900); grad.addColorStop(0,'#9bd5d1'); grad.addColorStop(.5,'#84c9c8'); grad.addColorStop(1,'#7abcc3');
@@ -888,7 +934,68 @@
     {type:'mushroom',x:1087,y:505,scale:.45},
     {type:'mushroom',x:458,y:624,scale:.6}
   ];
-  window.IslandWorld = { drawGround, drawObject, isLand, props, bounds:{width:2000,height:1500}, center:{x:1000,y:760}, shoreFactor };
+  // Existing props keep their exact positions; the expansion only appends
+  // scenery. Broad clearances leave the narrow footpaths open to all three.
+  const newScenery=[
+    {type:'tree',x:1000,y:218,scale:.82,variant:'green'},
+    {type:'tree',x:1125,y:262,scale:.72,variant:'green'},
+    {type:'tree',x:1260,y:338,scale:.74,variant:'green'},
+    {type:'tree',x:565,y:220,scale:.70,variant:'green'},
+    {type:'tree',x:520,y:385,scale:.68,variant:'green'},
+    {type:'tree',x:225,y:645,scale:.75,variant:'green'},
+    {type:'tree',x:195,y:825,scale:.68,variant:'green'},
+    {type:'tree',x:410,y:1200,scale:.70,variant:'green'},
+    {type:'tree',x:760,y:1230,scale:.75,variant:'green'},
+    {type:'tree',x:1000,y:1225,scale:.66,variant:'green'},
+    {type:'tree',x:1280,y:1205,scale:.72,variant:'pink'},
+    {type:'tree',x:1540,y:1115,scale:.72,variant:'pink'},
+    {type:'bush',x:1160,y:180,scale:.75,variant:'flowers'},
+    {type:'bush',x:1057,y:307,scale:.72,variant:'flowers'},
+    {type:'bush',x:1338,y:391,scale:.78},
+    {type:'bush',x:780,y:337,scale:.80,variant:'flowers'},
+    {type:'bush',x:670,y:340,scale:.65,variant:'flowers'},
+    {type:'bush',x:475,y:475,scale:.72},
+    {type:'bush',x:368,y:415,scale:.68,variant:'flowers'},
+    {type:'bush',x:205,y:734,scale:.70},
+    {type:'bush',x:353,y:851,scale:.76,variant:'flowers'},
+    {type:'bush',x:472,y:1164,scale:.70,variant:'flowers'},
+    {type:'bush',x:695,y:1215,scale:.74,variant:'flowers'},
+    {type:'bush',x:886,y:1228,scale:.80},
+    {type:'bush',x:1080,y:1275,scale:.62,variant:'flowers'},
+    {type:'bush',x:1190,y:1380,scale:.60,variant:'flowers'},
+    {type:'bush',x:1375,y:1203,scale:.75,variant:'flowers'},
+    {type:'bush',x:1570,y:1045,scale:.70},
+    {type:'rock',x:875,y:185,scale:.55,variant:0},
+    {type:'rock',x:382,y:1154,scale:.55,variant:0},
+    {type:'rock',x:943,y:1385,scale:.50,variant:1},
+    {type:'mushroom',x:1045,y:249,scale:.62},
+    {type:'mushroom',x:1060,y:262,scale:.40},
+    {type:'mushroom',x:254,y:675,scale:.54},
+    {type:'mushroom',x:742,y:1245,scale:.53},
+    {type:'mushroom',x:750,y:1256,scale:.38},
+    {type:'mushroom',x:1323,y:1210,scale:.48}
+  ];
+  function onGrass(x,y) {
+    const nx=(x-1000)/(790*.93),ny=(y-741)/(470*.93);
+    return Math.hypot(nx,ny)<shoreFactor(Math.atan2(ny,nx));
+  }
+  for(const obj of newScenery){
+    const margin={tree:50,bush:36,rock:36,mushroom:22}[obj.type]||30;
+    if(!onGrass(obj.x,obj.y)||nearRoad(obj.x,obj.y,margin))continue;
+    props.push({...obj,scenic:true});
+  }
+  function freezeGeometry(value) {
+    if(value&&typeof value==='object'&&!Object.isFrozen(value)){
+      Object.values(value).forEach(freezeGeometry);Object.freeze(value);
+    }
+    return value;
+  }
+  const navigation=freezeGeometry({nodes:roadNodes,roads:roadLines,fillets:roadFillets,landings:roadLandings});
+  const coastline=freezeGeometry(Array.from({length:160},(_,i)=>{
+    const angle=i/160*TAU,r=shoreFactor(angle);
+    return {x:1000+Math.cos(angle)*790*r,y:760+Math.sin(angle)*470*r};
+  }));
+  window.IslandWorld = { drawGround, drawObject, isLand, props, bounds:BOUNDS, center:CENTER, shoreFactor, navigation, coastline };
 })();
 
 </script>
@@ -1297,9 +1404,13 @@
     return !sceneObstacles().some(o=>o.rect ? x>o.left-9&&x<o.right+9&&y>o.top-8&&y<o.bottom+8 : Math.hypot(x-o.x,y-o.y)<o.r+10);
   }
   if(!canWalk(state.position.x,state.position.y)) { party[state.leader].x=indoors()?1000:1030;party[state.leader].y=indoors()?1030:968; }
-  const cell=30,cols=68,rows=51;
-  let grid=[];
-  function rebuildNavigation(){grid=Array.from({length:cols*rows},(_,i)=>canWalk(i%cols*cell+15,Math.floor(i/cols)*cell+15));}
+  const cell=30;
+  let cols=0,rows=0,grid=[];
+  function rebuildNavigation(){
+    const bounds=sceneArt().bounds;
+    cols=Math.ceil(bounds.width/cell);rows=Math.ceil(bounds.height/cell);
+    grid=Array.from({length:cols*rows},(_,i)=>canWalk(i%cols*cell+15,Math.floor(i/cols)*cell+15));
+  }
   rebuildNavigation();
   function gridPoint(x,y,origin=null) {
     const gx=clamp(Math.floor(x/cell),0,cols-1),gy=clamp(Math.floor(y/cell),0,rows-1);
@@ -1530,6 +1641,11 @@
     const entries=[['apple','发现甜甜的苹果','低头看看，果树旁有惊喜。'],['carrot','亲手种出胡萝卜','一颗种子、一点水，再等一小会儿。'],['fish','钓到第一条小鱼','小码头上，耐心也会有回报。'],['shell','捡起海的礼物','沿着沙滩，把贝壳装进小背包。']];
     setModal('journal',`<p class="eyebrow">OUR LITTLE ISLAND JOURNAL</p><h2 id="modal-title">小岛日记</h2><p class="modal-subtitle">第 ${state.day} 天。普通的小事情，也值得被记下来。</p><div class="journal-list">${entries.map(([key,title,desc],i)=>`<div class="journal-row ${state.ever[key]>0?'complete':''}"><span class="journal-check">${state.ever[key]>0?svg('check'):'0'+(i+1)}</span><div><b>${title}</b><p>${state.ever[key]>0?`已经收集了 ${state.ever[key]} ${itemInfo[key].unit}${itemInfo[key].name}。`:desc}</p></div></div>`).join('')}<div class="journal-row ${state.picnicDone?'complete':''}"><span class="journal-check">${state.picnicDone?svg('heart'):'05'}</span><div><b>我们的第一场野餐</b><p>${state.picnicDone?'有好吃的，也有你们。今天真好。':'备齐食材，去中间的野餐垫集合。'}</p></div></div></div><div class="journal-reward">${state.picnicDone?'✦ 已获得纪念：三个人的好天气 ✦<br>心愿已经实现，快乐还可以继续。':'等野餐开始的那一刻，<br>我们就有了第一个共同的小岛回忆。'}</div>`);
   }
+  function islandMapView(width=960,height=720){
+    const bounds=World.bounds,padding=28;
+    const scale=Math.min((width-padding*2)/bounds.width,(height-padding*2)/bounds.height);
+    return {scale,ox:(width-bounds.width*scale)/2,oy:(height-bounds.height*scale)/2};
+  }
   function openMap(){
     if(indoors()){
       setModal('room-map',`<p class="eyebrow">A LITTLE GUIDE TO OUR HOME</p><h2 id="modal-title">小屋导览</h2><p class="modal-subtitle">找一个喜欢的角落，三小只一起走过去。</p><canvas class="map-canvas" id="map-canvas" aria-label="小屋平面图，可点击选择目的地"></canvas><div class="map-destinations">${roomFeatures.map(f=>`<button class="secondary" data-room-map="${f.id}">${{'room-tea':'茶桌','room-bed':'床边','room-books':'书架','room-window':'窗边','room-exit':'出门'}[f.id]}</button>`).join('')}</div>`);
@@ -1540,7 +1656,7 @@
       document.querySelectorAll('[data-room-map]').forEach(b=>b.onclick=()=>{const f=roomFeatures.find(f=>f.id===b.dataset.roomMap);closeModal();navigateTo(f,f);});return;
     }
     setModal('map',`<p class="eyebrow">A FEW PLACES WORTH WANDERING</p><h2 id="modal-title">慢慢岛导览</h2><p class="modal-subtitle">点地图或下方地点，一起慢慢走过去。</p><canvas class="map-canvas" id="map-canvas" aria-label="慢慢岛地图，可点击选择目的地"></canvas><div class="map-legend"><span><i style="background:#ddaa80"></i> 你们在这里</span><span><i></i> 小岛好去处</span></div><div class="map-destinations">${[['home','小屋'],['garden','菜园'],['picnic','野餐垫'],['fish','码头'],['bench','长椅']].map(([id,name])=>`<button class="secondary" data-map-go="${id}">${name}</button>`).join('')}</div>`);
-    const mc=$('map-canvas');mc.width=960;mc.height=720;const m=mc.getContext('2d'),scale=.43,ox=50,oy=28;
+    const mc=$('map-canvas');mc.width=960;mc.height=720;const m=mc.getContext('2d'),{scale,ox,oy}=islandMapView(mc.width,mc.height);
     m.translate(ox,oy);m.scale(scale,scale);World.drawGround(m,t);World.props.forEach(o=>World.drawObject(m,o,t,{gardenStage:gardenStage(),gardenProgress:gardenProgress(),picnicDone:state.picnicDone}));
     features.forEach(f=>{m.fillStyle='#fffdf4';m.beginPath();m.arc(f.x,f.y,17,0,TAU);m.fill();m.fillStyle='#5c896a';m.beginPath();m.arc(f.x,f.y,8,0,TAU);m.fill();m.font='22px system-ui';m.textAlign='center';m.fillStyle='#3f6955';m.fillText(f.name,f.x,f.y+43);});
     m.fillStyle='#e8aa84';m.strokeStyle='#fffdf4';m.lineWidth=5;m.beginPath();m.arc(active().x,active().y,15,0,TAU);m.fill();m.stroke();
