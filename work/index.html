@@ -72,6 +72,115 @@ body{font-family:var(--serif);font-size:16px}
 .clip-iteration{border:1px solid var(--line);border-radius:18px;padding:30px;margin:28px 0}.clip-iteration>h3{font-family:var(--serif);font-size:26px;line-height:1.6;margin:12px 0 20px}.clip-scene-counts{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:19px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.clip-scene-counts strong{display:block;font-family:var(--serif);font-size:39px;font-weight:400;line-height:1.3}.clip-scene-counts span{font-size:11px;color:var(--muted)}.clip-iteration-steps{display:grid;gap:16px;margin:25px 0}.clip-iteration-steps>div{display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px}.clip-iteration-steps span{font-size:11px;color:var(--muted);padding-top:3px}.clip-iteration-steps p{font-size:13px;line-height:1.9}.clip-iteration>.note{font-size:11px}
 @media(max-width:760px){.clip-responsibilities,.clip-interaction-notes{grid-template-columns:1fr;gap:12px}.clip-responsibilities>div{padding:18px}.clip-interaction-notes{gap:20px}.clip-responsibilities h3,.clip-interaction-notes h3{font-size:15px}.clip-responsibilities p,.clip-interaction-notes p{font-size:12px}.clip-demo-frame{height:1030px}.clip-prototype{margin-left:-8px;margin-right:-8px}.clip-prototype .prototype-head{font-size:11px;padding:12px}.clip-prototype .proto-caption{font-size:10px;padding:13px}.clip-collaboration>div{grid-template-columns:1fr;gap:8px;padding:18px 0}.clip-collaboration p{font-size:12px}.clip-pilot,.clip-iteration{padding:21px 18px}.clip-pilot-head{align-items:flex-start}.clip-pilot-head h3,.clip-iteration>h3{font-size:23px}.clip-pilot-head .tag{font-size:9px}.clip-pilot-head .eyebrow{font-size:9px;letter-spacing:.1em}.clip-rates{gap:10px}.clip-rates strong,.clip-rates #clip-completion-value{font-size:34px}.clip-rates strong>span{font-size:17px}.clip-rates h4{font-size:11px}.clip-rates p{font-size:10px;line-height:1.8}.clip-rate-control button{min-height:38px}.clip-iteration-steps p{font-size:12px}.clip-pilot>.note,.clip-iteration>.note{font-size:11px}.clip-scene-counts span{font-size:11px}}
 
+/* Clip typography: one Chinese font family, a clear reading scale, and selective emphasis. */
+.clip-case{
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",Arial,sans-serif;
+  --muted:#665b54;
+  --clip-body:15px;
+  font-family:var(--sans);font-size:var(--clip-body);font-weight:400;line-height:1.85;
+}
+.clip-case button,.clip-case input{font-family:var(--sans)}
+.clip-case strong{font-weight:600}
+.clip-case .case-hero h1,.clip-case .case-section h2,
+.clip-case .scenario-quote h3,.clip-case .pillar .label,
+.clip-case .outcome-box h3,.clip-case .clip-pilot-head h3,
+.clip-case .clip-iteration>h3{font-family:var(--sans);font-weight:600;letter-spacing:0}
+.clip-case .case-hero h1{font-size:52px;line-height:1.3;font-weight:650;letter-spacing:-.02em}
+.clip-case .case-hero .case-index{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.04em;margin-bottom:16px}
+.clip-case .case-hero .case-subtitle{font-family:var(--sans);font-size:20px;font-weight:500;line-height:1.65;margin-top:16px}
+.clip-case .case-hero .intro{font-size:var(--clip-body);line-height:1.9}
+.clip-case .breadcrumb{font-size:12px}
+.clip-case .case-meta dt{font-size:12px;font-weight:500;letter-spacing:.04em}
+.clip-case .case-meta dd{font-size:13px;line-height:1.85;font-weight:500}
+.clip-case .tag{font-size:12px;line-height:1.5;font-weight:500}
+.clip-case .pill-button{font-size:13px;font-weight:600;line-height:1.5}
+.clip-case .case-banner p{font-size:12px;line-height:1.85}
+.clip-case .case-toc a{font-size:12px;font-weight:500;line-height:1.65;padding-top:10px;padding-bottom:10px}
+.clip-case .case-toc a.current{font-weight:600}
+.clip-case .case-toc .eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em}
+.clip-case .case-toc .toc-tour{font-size:12px;line-height:1.8;font-weight:500}
+.clip-case .case-section h2{font-size:30px;line-height:1.5;margin-bottom:22px}
+.clip-case .case-section .lead{font-size:16px;line-height:1.95}
+.clip-case .case-section .body-copy,
+.clip-case .detail-block p,.clip-case .pillar p,.clip-case .outcome-box p,
+.clip-case .clip-responsibilities p,.clip-case .clip-interaction-notes p,
+.clip-case .clip-collaboration p,.clip-case .clip-iteration-steps p,
+.clip-case .clip-history{font-size:var(--clip-body);line-height:1.9}
+.clip-case .section-label,.clip-case .eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em}
+.clip-case .note,.clip-case .source-note,.clip-case .callout small,
+.clip-case .outcome-box .boundary,.clip-case .clip-prototype .proto-caption{font-size:12px;line-height:1.85}
+.clip-case .clip-responsibilities span,.clip-case .clip-interaction-notes span,
+.clip-case .detail-block .mini-label{font-size:12px;font-weight:500;letter-spacing:.04em}
+.clip-case .clip-responsibilities h3,.clip-case .clip-interaction-notes h3,
+.clip-case .clip-collaboration h3,.clip-case .pattern-card h3{font-size:17px;line-height:1.6;font-weight:600}
+.clip-case .clip-subheading{font-family:var(--sans);font-weight:600;line-height:1.65;letter-spacing:0}
+.clip-case .stat .stat-number,.clip-case .clip-rates strong,
+.clip-case .clip-scene-counts strong,.clip-case .clip-funnel strong{font-family:var(--sans);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.clip-case .stat .stat-number{font-size:36px;line-height:1.3}
+.clip-case .stat .stat-number small{font-size:12px;font-weight:500;letter-spacing:0;line-height:1.65}
+.clip-case .stat p{font-size:12px;line-height:1.8}
+.clip-case .segmented button{font-size:13px;font-weight:500;line-height:1.6}
+.clip-case .segmented button.active{font-weight:600}
+.clip-case .scenario-quote h3{font-size:25px;line-height:1.5}
+.clip-case .callout p{font-family:var(--sans);font-size:18px;font-weight:500;line-height:1.85}
+.clip-case .pattern-card p,.clip-case .pattern-card .verdict,
+.clip-case .flow-step p,.clip-case .decision-row,.clip-case .decision-row p{font-size:14px;line-height:1.9}
+.clip-case .flow-step h3{font-size:16px;font-weight:600;line-height:1.6}
+.clip-case .pillar .label{font-size:20px;line-height:1.6}
+.clip-case .decision-row strong,.clip-case .clip-history summary{font-weight:600}
+.clip-case .clip-prototype .prototype-head{font-size:13px;font-weight:600;line-height:1.7}
+.clip-case .clip-prototype .prototype-head a{font-size:12px;font-weight:500}
+.clip-case .clip-pilot-head h3,.clip-case .clip-iteration>h3,.clip-case .outcome-box h3{font-size:24px;line-height:1.6}
+.clip-case .clip-funnel li>div:first-child{font-size:14px;font-weight:500}
+.clip-case .clip-funnel strong{font-size:25px}
+.clip-case .clip-funnel strong small,.clip-case .clip-funnel p,
+.clip-case .clip-rates p,.clip-case .clip-scene-counts span{font-size:12px;line-height:1.8;letter-spacing:0}
+.clip-case .clip-rates strong,.clip-case .clip-rates #clip-completion-value{font-size:42px;line-height:1.3}
+.clip-case .clip-rates strong>span{font-size:21px}
+.clip-case .clip-rates h4{font-size:14px;line-height:1.65;font-weight:600}
+.clip-case .clip-rate-control{font-size:12px;font-weight:500}
+.clip-case .clip-rate-control button{font-size:12px;font-weight:600;min-height:40px}
+.clip-case .clip-scene-counts strong{font-size:38px}
+.clip-case .clip-iteration-steps span{font-size:13px;font-weight:600}
+.clip-case .deliverable{font-size:13px;line-height:1.8}
+@media(max-width:1100px){
+  .clip-case .case-hero h1{font-size:46px}
+  .clip-case .stat .stat-number small{display:block;margin:5px 0 0}
+}
+@media(max-width:760px){
+  .clip-case{--clip-body:14px}
+  .clip-case .case-hero h1{font-size:38px}
+  .clip-case .case-hero .case-subtitle{font-size:18px}
+  .clip-case .case-meta>div{gap:16px;align-items:baseline}
+  .clip-case .case-meta dt{min-width:64px;flex-shrink:0}
+  .clip-case .case-meta dd{font-size:13px}
+  .clip-case .case-toc{padding-top:9px;padding-bottom:9px}
+  .clip-case .case-toc a{font-size:12px;padding-top:7px;padding-bottom:7px}
+  .clip-case .case-section{scroll-margin-top:70px}
+  .clip-case .case-section h2{font-size:25px;line-height:1.5;margin-bottom:18px}
+  .clip-case .case-section .lead{font-size:15px;line-height:1.95}
+  .clip-case .stat .stat-number{font-size:30px}
+  .clip-case .stat .stat-number small{min-height:3.3em}
+  .clip-case .stat{padding:18px 11px}
+  .clip-case .segmented button{font-size:12px;padding:10px 9px;min-height:40px}
+  .clip-case .scenario-quote h3{font-size:22px}
+  .clip-case .callout p{font-size:17px}
+  .clip-case .clip-pilot-head{flex-wrap:wrap;gap:10px}
+  .clip-case .clip-pilot-head h3,.clip-case .clip-iteration>h3,.clip-case .outcome-box h3{font-size:21px}
+  .clip-case .clip-rates strong,.clip-case .clip-rates #clip-completion-value{font-size:34px}
+  .clip-case .clip-rates strong>span{font-size:17px}
+  .clip-case .clip-scene-counts strong{font-size:34px}
+  .clip-case .clip-rate-control{gap:10px}
+  .clip-case .clip-rate-control>div{flex-wrap:wrap}
+  .clip-case .deliverables,.clip-case .pillars{grid-template-columns:1fr}
+  .clip-case .deliverable{padding:13px 14px}
+}
+@media(max-width:500px){
+  .clip-case .clip-rates{grid-template-columns:1fr;gap:16px}
+  .clip-case .clip-rates>div{display:grid;grid-template-columns:90px minmax(0,1fr);column-gap:14px;align-items:center}
+  .clip-case .clip-rates strong{grid-row:span 2}
+  .clip-case .clip-rates h4{margin:0 0 2px}
+}
 </style>
 
 </head>
@@ -616,7 +725,7 @@ function home(){return `<div class="wrap"><section class="hero"><div class="hero
 <section class="capability-section" id="capabilities"><div class="capability-grid"><div class="capability-intro">${label('BEHIND THE WORK','我的产品能力')}<h2>不只问能不能做，<br>也问为什么，<br>以及怎么才算对。</h2><p>能力不放在进度条里。<br>点开一个问题，看我在项目里怎样回答它。</p><span class="asterisk" aria-hidden="true">✳</span></div><div>${caps()}</div></div></section>
 <section class="about-band reveal"><div><span class="eyebrow">A LITTLE ABOUT ME</span><h2>设计让我看见细节，<br>产品让我连接全局。</h2><p>${D.profile.intro}</p><div class="skills-mini"><span class="tag">安徽大学 · 环境设计</span><span class="tag">香港大学 · 管理科学与工程</span></div><div class="button-row" style="margin-top:25px"><a class="text-button" href="/CN/">多认识我一点 ↗</a></div></div><div class="about-badge"><div class="about-mark">Y.<span class="little">curiosity → clarity<br>DESIGN × PRODUCT</span></div></div></section></div>`;}
 function section(id,num,title,body,src=''){return `<section class="case-section" id="${id}">${label(num,title)}${body}${src?source(src):''}</section>`;}
-function caseShell(p,sections,content){return `<div class="wrap"><section class="case-hero"><div class="breadcrumb"><a href="#/work">← 精选项目</a><span>/</span><span>${p.title}</span></div><div class="case-title-grid"><div><div class="case-index">Case ${p.number} — ${p.category}</div><h1>${p.title}</h1><p class="case-subtitle">${p.subtitle}</p></div><div><p class="intro">${p.description}</p>${tags(p.tags)}</div></div><dl class="case-meta"><div><dt>我的角色</dt><dd>${p.role}</dd></div><div><dt>场景与载体</dt><dd>${p.scope}</dd></div><div><dt>展示交付</dt><dd>${p.displayDeliverables||'产品洞察与方案规划材料'}</dd></div></dl>${p.id==='clip'?'<div class="button-row clip-hero-actions"><a class="pill-button" href="#/project/clip/definition">体验电视交互 <span>↗</span></a><a class="pill-button light" href="#/project/clip/validation">看试点复盘 <span>↓</span></a><span class="note">TCL 软件工程中心 · 产品规划部 · 2026.07—09</span></div>':''}</section><div class="case-banner ${p.id}"><div class="banner-copy"><h2>${p.en}</h2><p>${p.id==='clip'?'PRODUCT CASE':'PRODUCT STUDY'} / ${p.number}<br>${p.id==='clip'?'从「剪得短」，走向「看得懂、接得上」。':p.id==='sleep'?'从「亮、动、吵」，走向「暗、静、稳」。':'从「给设备加功能」，走向「让设备服务场景」。'}</p></div>${art(p.id)}</div><div class="case-body"><aside class="case-toc" aria-label="案例章节"><span class="eyebrow">IN THIS STORY</span>${sections.map(([id,t],i)=>`<a href="${href(p.id,id)}" data-toc="${id}">${String(i+1).padStart(2,'0')}　${t}</a>`).join('')}<button class="toc-tour" data-action="tour" data-project="${p.id}">用面试模式讲解<br>这个项目 ↗</button></aside><article class="case-content">${content}${nextProject(p.id)}</article></div></div>`;}
+function caseShell(p,sections,content){return `<div class="wrap${p.id==='clip'?' clip-case':''}"><section class="case-hero"><div class="breadcrumb"><a href="#/work">← 精选项目</a><span>/</span><span>${p.title}</span></div><div class="case-title-grid"><div><div class="case-index">Case ${p.number} — ${p.category}</div><h1>${p.title}</h1><p class="case-subtitle">${p.subtitle}</p></div><div><p class="intro">${p.description}</p>${tags(p.tags)}</div></div><dl class="case-meta"><div><dt>我的角色</dt><dd>${p.role}</dd></div><div><dt>场景与载体</dt><dd>${p.scope}</dd></div><div><dt>展示交付</dt><dd>${p.displayDeliverables||'产品洞察与方案规划材料'}</dd></div></dl>${p.id==='clip'?'<div class="button-row clip-hero-actions"><a class="pill-button" href="#/project/clip/definition">体验电视交互 <span>↗</span></a><a class="pill-button light" href="#/project/clip/validation">看试点复盘 <span>↓</span></a><span class="note">TCL 软件工程中心 · 产品规划部 · 2026.07—09</span></div>':''}</section><div class="case-banner ${p.id}"><div class="banner-copy"><h2>${p.en}</h2><p>${p.id==='clip'?'PRODUCT CASE':'PRODUCT STUDY'} / ${p.number}<br>${p.id==='clip'?'从「剪得短」，走向「看得懂、接得上」。':p.id==='sleep'?'从「亮、动、吵」，走向「暗、静、稳」。':'从「给设备加功能」，走向「让设备服务场景」。'}</p></div>${art(p.id)}</div><div class="case-body"><aside class="case-toc" aria-label="案例章节"><span class="eyebrow">IN THIS STORY</span>${sections.map(([id,t],i)=>`<a href="${href(p.id,id)}" data-toc="${id}">${String(i+1).padStart(2,'0')}　${t}</a>`).join('')}<button class="toc-tour" data-action="tour" data-project="${p.id}">用面试模式讲解<br>这个项目 ↗</button></aside><article class="case-content">${content}${nextProject(p.id)}</article></div></div>`;}
 function nextProject(id){const p=D.projects[(D.projects.findIndex(p=>p.id===id)+1)%3];return `<a class="next-project" href="${href(p.id)}"><div><span class="eyebrow">NEXT STORY / ${p.category}</span><h3>${p.title}</h3></div><span class="arrow">↗</span></a>`;}
 function outputs(p,body){return `<div class="outcome-box"><h3>${p.id==='clip'?'我的交付与复盘':'我的独立交付'}</h3><p>${body}</p><div class="deliverables">${p.deliverables.map((x,i)=>`<div class="deliverable"><span>0${i+1}</span>${x}</div>`).join('')}</div><p class="boundary">${p.boundary||'当前展示为研究与方案交付。现有材料未提供评审通过、研发上线或业务增长结果，因此不把规划目标写成已实现的成效。'}</p></div>`;}
 function clipPage(){const p=getProject('clip');return caseShell(p,[['overview','问题与职责'],['scenarios','五类观看场景'],['competition','竞品与替代方案'],['definition','电视交互演示'],['capability','能力与协作推进'],['mvp','首期范围与评测'],['validation','试点数据与迭代']],
